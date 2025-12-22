@@ -26,7 +26,7 @@ namespace IndividualTask2
         public Polyhedron firstCube;
         public Polyhedron secondCube;
 
-        private bool useZBufferRendering = false;
+        private bool useZBufferRendering = true;
 
         private void CreateEmptyRoom()
         {
@@ -62,7 +62,8 @@ namespace IndividualTask2
         }
 
 
-        private void CreateFirstLightSource() {
+        private void CreateFirstLightSource()
+        {
             firstLightSource = new LightSource(0f, 10f, 0f, Color.White);
         }
 
@@ -171,7 +172,11 @@ namespace IndividualTask2
 
         private void zBufferCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            useZBufferRendering = zBufferCheckBox.Checked;
+
+        }
+
+        private void Render_Click(object sender, EventArgs e)
+        {
             panel1.Invalidate();
         }
     }

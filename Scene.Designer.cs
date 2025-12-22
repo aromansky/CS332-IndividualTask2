@@ -34,7 +34,6 @@ namespace IndividualTask2
         private void InitializeComponent()
         {
             panel1 = new Panel();
-            zBufferCheckBox = new CheckBox();
             figuresGroupBox = new GroupBox();
             greenSphereRadioButton = new RadioButton();
             yellowSphereRadioButton = new RadioButton();
@@ -50,6 +49,7 @@ namespace IndividualTask2
             topWallRadioButton = new RadioButton();
             leftWallRadioButton = new RadioButton();
             rightWallRadioButton = new RadioButton();
+            Render = new Button();
             figuresGroupBox.SuspendLayout();
             figuresSettingsGroupBox.SuspendLayout();
             WalsGroupBox.SuspendLayout();
@@ -66,18 +66,6 @@ namespace IndividualTask2
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
             // 
-            // zBufferCheckBox
-            // 
-            zBufferCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            zBufferCheckBox.AutoSize = true;
-            zBufferCheckBox.Location = new Point(552, 12);
-            zBufferCheckBox.Name = "zBufferCheckBox";
-            zBufferCheckBox.Size = new Size(65, 19);
-            zBufferCheckBox.TabIndex = 46;
-            zBufferCheckBox.Text = "Рендер";
-            zBufferCheckBox.UseVisualStyleBackColor = true;
-            zBufferCheckBox.CheckedChanged += zBufferCheckBox_CheckedChanged;
-            // 
             // figuresGroupBox
             // 
             figuresGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -85,7 +73,7 @@ namespace IndividualTask2
             figuresGroupBox.Controls.Add(yellowSphereRadioButton);
             figuresGroupBox.Controls.Add(vlueCubeRadioButton);
             figuresGroupBox.Controls.Add(RedCuberadioButton);
-            figuresGroupBox.Location = new Point(552, 37);
+            figuresGroupBox.Location = new Point(552, 12);
             figuresGroupBox.Name = "figuresGroupBox";
             figuresGroupBox.Size = new Size(200, 122);
             figuresGroupBox.TabIndex = 47;
@@ -142,7 +130,7 @@ namespace IndividualTask2
             figuresSettingsGroupBox.Controls.Add(transparencyRadioButton);
             figuresSettingsGroupBox.Controls.Add(mirrorRadioButton);
             figuresSettingsGroupBox.Controls.Add(nothingRadioButton);
-            figuresSettingsGroupBox.Location = new Point(552, 165);
+            figuresSettingsGroupBox.Location = new Point(552, 140);
             figuresSettingsGroupBox.Name = "figuresSettingsGroupBox";
             figuresSettingsGroupBox.Size = new Size(200, 101);
             figuresSettingsGroupBox.TabIndex = 48;
@@ -189,7 +177,7 @@ namespace IndividualTask2
             WalsGroupBox.Controls.Add(topWallRadioButton);
             WalsGroupBox.Controls.Add(leftWallRadioButton);
             WalsGroupBox.Controls.Add(rightWallRadioButton);
-            WalsGroupBox.Location = new Point(552, 272);
+            WalsGroupBox.Location = new Point(552, 247);
             WalsGroupBox.Name = "WalsGroupBox";
             WalsGroupBox.Size = new Size(200, 152);
             WalsGroupBox.TabIndex = 48;
@@ -251,15 +239,26 @@ namespace IndividualTask2
             rightWallRadioButton.Text = "Правая стена";
             rightWallRadioButton.UseVisualStyleBackColor = true;
             // 
+            // Render
+            // 
+            Render.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            Render.Location = new Point(558, 423);
+            Render.Name = "Render";
+            Render.Size = new Size(194, 23);
+            Render.TabIndex = 49;
+            Render.Text = "Рендер";
+            Render.UseVisualStyleBackColor = true;
+            Render.Click += Render_Click;
+            // 
             // Scene
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(784, 561);
+            Controls.Add(Render);
             Controls.Add(WalsGroupBox);
             Controls.Add(figuresSettingsGroupBox);
             Controls.Add(figuresGroupBox);
-            Controls.Add(zBufferCheckBox);
             Controls.Add(panel1);
             Margin = new Padding(3, 2, 3, 2);
             Name = "Scene";
@@ -272,14 +271,12 @@ namespace IndividualTask2
             WalsGroupBox.ResumeLayout(false);
             WalsGroupBox.PerformLayout();
             ResumeLayout(false);
-            PerformLayout();
 
         }
 
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private CheckBox zBufferCheckBox;
         private GroupBox figuresGroupBox;
         private RadioButton vlueCubeRadioButton;
         private RadioButton RedCuberadioButton;
@@ -295,6 +292,7 @@ namespace IndividualTask2
         private RadioButton topWallRadioButton;
         private RadioButton leftWallRadioButton;
         private RadioButton rightWallRadioButton;
+        private Button Render;
     }
 }
 
