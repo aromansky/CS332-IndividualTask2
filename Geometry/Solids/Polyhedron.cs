@@ -212,21 +212,12 @@ namespace Geometry
 
         public void ColorFacesAutomatically()
         {
-            if (this.Name == "Гексаэдр" && Faces.Count == 6)
-            {
-                faces[0].SetColor(new Vector3(Color.Red));
-                faces[1].SetColor(new Vector3(Color.White));
-                faces[2].SetColor(new Vector3(Color.Aqua));
-                faces[3].SetColor(new Vector3(Color.White));
-                faces[4].SetColor(new Vector3(Color.White));
-                faces[5].SetColor(new Vector3(Color.White));
-
-                return;
-            }
-            for (int i = 0; i < Faces.Count; i++)
-            {
-                faces[i].SetColor(DefaultFaceColors[i % DefaultFaceColors.Count]);
-            }
+            faces[0].SetColor(new Vector3(Color.Red));
+            faces[1].SetColor(new Vector3(Color.Gray));
+            faces[2].SetColor(new Vector3(Color.Aqua));
+            faces[3].SetColor(new Vector3(Color.White));
+            faces[4].SetColor(new Vector3(Color.Purple));
+            faces[5].SetColor(new Vector3(Color.White));
         }
 
         public void ColorFacesMonotonously(Color col)

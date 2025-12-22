@@ -18,25 +18,79 @@ namespace IndividualTask2
     {
         private Camera cam;
         public List<Polyhedron> polyhedrons = new List<Polyhedron>();
-        internal int polyInd = -1;
         internal Renderer renderer;
-        private LightSource lightSource;
+
+        private LightSource firstLightSource;
+        private LightSource secondLightSource;
+
+        public Polyhedron firstCube;
+        public Polyhedron secondCube;
 
         private bool useZBufferRendering = false;
+
+        private void CreateEmptyRoom()
+        {
+            Polyhedron poly = Polyhedron.CreateHexahedron(2);
+            Transform.Apply(Transform.CreateScaleMatrix(10, 10, 10), poly);
+
+            poly.ColorFacesAutomatically();
+            poly.InvertNormals();
+
+            polyhedrons.Add(poly);
+        }
+
+        public void CreateFirstCube()
+        {
+            Polyhedron poly = Polyhedron.CreateHexahedron();
+            Transform.Apply(Transform.CreateScaleMatrix(6, 6, 6), poly);
+            Transform.Apply(Transform.CreateRotationAroundYMatrix(-45), poly);
+            Transform.Apply(Transform.CreateTranslationMatrix(5, -7f, -6.0f), poly);
+            poly.ColorFacesMonotonously(Color.Red);
+            firstCube = poly;
+            polyhedrons.Add(poly);
+        }
+
+        public void CreateSecondCube()
+        {
+            Polyhedron poly = Polyhedron.CreateHexahedron();
+            Transform.Apply(Transform.CreateScaleMatrix(4, 4, 4), poly);
+            Transform.Apply(Transform.CreateRotationAroundYMatrix(-60), poly);
+            Transform.Apply(Transform.CreateTranslationMatrix(-5, -7f, 1f), poly);
+            poly.ColorFacesMonotonously(Color.Blue);
+            secondCube = poly;
+            polyhedrons.Add(poly);
+        }
+
+
+        private void CreateFirstLightSource() {
+            firstLightSource = new LightSource(0f, 10f, 0f, Color.White);
+        }
+
+        private void CreateSecondLightSource()
+        {
+            secondLightSource = new LightSource(-5f, 5f, 0f, Color.Red);
+        }
 
 
         public Scene()
         {
             InitializeComponent();
 
+            CreateEmptyRoom();
+
+            CreateFirstCube();
+            CreateSecondCube();
+
+            CreateFirstLightSource();
+            CreateSecondLightSource();
+
             cam = new Camera(
-                new Point3D(0f, 0f, 1f),
+                new Point3D(0, 0, 20),
                 new Point3D(0, 0, 0),
                 panel1.Width, panel1.Height
                 );
 
-            lightSource = new LightSource(0f, 1f, 0f, Color.Red);
-            renderer = new Renderer(cam, panel1.Width, panel1.Height, lightSource);
+            renderer = new Renderer(cam, panel1.Width, panel1.Height, firstLightSource);
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
@@ -58,11 +112,11 @@ namespace IndividualTask2
             }
             else
             {
-                PointF? lightPointNullable = cam.ProjectPoint2D(lightSource);
+                PointF? lightPointNullable = cam.ProjectPoint2D(firstLightSource);
                 if (lightPointNullable.HasValue)
                 {
                     PointF lightPoint = lightPointNullable.Value;
-                    Color lightColor = Color.FromArgb((int)(lightSource.Color.X * 255), (int)(lightSource.Color.Y * 255), (int)(lightSource.Color.Z * 255));
+                    Color lightColor = Color.FromArgb((int)(firstLightSource.Color.X * 255), (int)(firstLightSource.Color.Y * 255), (int)(firstLightSource.Color.Z * 255));
 
                     int lightPointSize = 12;
 
@@ -79,8 +133,7 @@ namespace IndividualTask2
 
                     using (Pen pen = new Pen(Color.Black, 1f))
                     {
-                        if (i == polyInd) pen.Color = Color.Purple;
-                        else pen.Color = Color.Black;
+                        pen.Color = Color.Black;
 
                         foreach (PointF[] face in projectedFaces)
                         {
@@ -110,7 +163,7 @@ namespace IndividualTask2
             cam.ScreenWidth = panel1.Width;
             cam.ScreenHeight = panel1.Height;
 
-            renderer = new Renderer(cam, panel1.Width, panel1.Height, lightSource);
+            renderer = new Renderer(cam, panel1.Width, panel1.Height, firstLightSource);
 
             panel1.Invalidate();
         }

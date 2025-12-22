@@ -33,13 +33,26 @@ namespace IndividualTask2
         /// </summary>
         private void InitializeComponent()
         {
-            components = new System.ComponentModel.Container();
             panel1 = new Panel();
-            contextMenuStrip1 = new ContextMenuStrip(components);
-            фигурыToolStripMenuItem = new ToolStripMenuItem();
-            openFileDialog1 = new OpenFileDialog();
             zBufferCheckBox = new CheckBox();
-            contextMenuStrip1.SuspendLayout();
+            figuresGroupBox = new GroupBox();
+            greenSphereRadioButton = new RadioButton();
+            yellowSphereRadioButton = new RadioButton();
+            vlueCubeRadioButton = new RadioButton();
+            RedCuberadioButton = new RadioButton();
+            figuresSettingsGroupBox = new GroupBox();
+            transparencyRadioButton = new RadioButton();
+            mirrorRadioButton = new RadioButton();
+            nothingRadioButton = new RadioButton();
+            WalsGroupBox = new GroupBox();
+            farWallRadioButton = new RadioButton();
+            bottomWallRadioButton = new RadioButton();
+            topWallRadioButton = new RadioButton();
+            leftWallRadioButton = new RadioButton();
+            rightWallRadioButton = new RadioButton();
+            figuresGroupBox.SuspendLayout();
+            figuresSettingsGroupBox.SuspendLayout();
+            WalsGroupBox.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -49,32 +62,15 @@ namespace IndividualTask2
             panel1.Location = new Point(10, 11);
             panel1.Margin = new Padding(3, 2, 3, 2);
             panel1.Name = "panel1";
-            panel1.Size = new Size(494, 539);
+            panel1.Size = new Size(536, 539);
             panel1.TabIndex = 0;
             panel1.Paint += panel1_Paint;
-            // 
-            // contextMenuStrip1
-            // 
-            contextMenuStrip1.ImageScalingSize = new Size(20, 20);
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { фигурыToolStripMenuItem });
-            contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(118, 26);
-            // 
-            // фигурыToolStripMenuItem
-            // 
-            фигурыToolStripMenuItem.Name = "фигурыToolStripMenuItem";
-            фигурыToolStripMenuItem.Size = new Size(117, 22);
-            фигурыToolStripMenuItem.Text = "Фигуры";
-            // 
-            // openFileDialog1
-            // 
-            openFileDialog1.FileName = "openFileDialog1";
             // 
             // zBufferCheckBox
             // 
             zBufferCheckBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             zBufferCheckBox.AutoSize = true;
-            zBufferCheckBox.Location = new Point(510, 12);
+            zBufferCheckBox.Location = new Point(552, 12);
             zBufferCheckBox.Name = "zBufferCheckBox";
             zBufferCheckBox.Size = new Size(65, 19);
             zBufferCheckBox.TabIndex = 46;
@@ -82,18 +78,199 @@ namespace IndividualTask2
             zBufferCheckBox.UseVisualStyleBackColor = true;
             zBufferCheckBox.CheckedChanged += zBufferCheckBox_CheckedChanged;
             // 
+            // figuresGroupBox
+            // 
+            figuresGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            figuresGroupBox.Controls.Add(greenSphereRadioButton);
+            figuresGroupBox.Controls.Add(yellowSphereRadioButton);
+            figuresGroupBox.Controls.Add(vlueCubeRadioButton);
+            figuresGroupBox.Controls.Add(RedCuberadioButton);
+            figuresGroupBox.Location = new Point(552, 37);
+            figuresGroupBox.Name = "figuresGroupBox";
+            figuresGroupBox.Size = new Size(200, 122);
+            figuresGroupBox.TabIndex = 47;
+            figuresGroupBox.TabStop = false;
+            figuresGroupBox.Text = "Фигура";
+            // 
+            // greenSphereRadioButton
+            // 
+            greenSphereRadioButton.AutoSize = true;
+            greenSphereRadioButton.Location = new Point(6, 97);
+            greenSphereRadioButton.Name = "greenSphereRadioButton";
+            greenSphereRadioButton.Size = new Size(107, 19);
+            greenSphereRadioButton.TabIndex = 3;
+            greenSphereRadioButton.TabStop = true;
+            greenSphereRadioButton.Text = "Зелёная сфера";
+            greenSphereRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // yellowSphereRadioButton
+            // 
+            yellowSphereRadioButton.AutoSize = true;
+            yellowSphereRadioButton.Location = new Point(6, 72);
+            yellowSphereRadioButton.Name = "yellowSphereRadioButton";
+            yellowSphereRadioButton.Size = new Size(103, 19);
+            yellowSphereRadioButton.TabIndex = 2;
+            yellowSphereRadioButton.TabStop = true;
+            yellowSphereRadioButton.Text = "Желтая сфера";
+            yellowSphereRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // vlueCubeRadioButton
+            // 
+            vlueCubeRadioButton.AutoSize = true;
+            vlueCubeRadioButton.Location = new Point(6, 47);
+            vlueCubeRadioButton.Name = "vlueCubeRadioButton";
+            vlueCubeRadioButton.Size = new Size(83, 19);
+            vlueCubeRadioButton.TabIndex = 1;
+            vlueCubeRadioButton.TabStop = true;
+            vlueCubeRadioButton.Text = "Синий куб";
+            vlueCubeRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // RedCuberadioButton
+            // 
+            RedCuberadioButton.AutoSize = true;
+            RedCuberadioButton.Location = new Point(6, 22);
+            RedCuberadioButton.Name = "RedCuberadioButton";
+            RedCuberadioButton.Size = new Size(96, 19);
+            RedCuberadioButton.TabIndex = 0;
+            RedCuberadioButton.TabStop = true;
+            RedCuberadioButton.Text = "Красный куб";
+            RedCuberadioButton.UseVisualStyleBackColor = true;
+            // 
+            // figuresSettingsGroupBox
+            // 
+            figuresSettingsGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            figuresSettingsGroupBox.Controls.Add(transparencyRadioButton);
+            figuresSettingsGroupBox.Controls.Add(mirrorRadioButton);
+            figuresSettingsGroupBox.Controls.Add(nothingRadioButton);
+            figuresSettingsGroupBox.Location = new Point(552, 165);
+            figuresSettingsGroupBox.Name = "figuresSettingsGroupBox";
+            figuresSettingsGroupBox.Size = new Size(200, 101);
+            figuresSettingsGroupBox.TabIndex = 48;
+            figuresSettingsGroupBox.TabStop = false;
+            figuresSettingsGroupBox.Text = "Управление фигурой";
+            // 
+            // transparencyRadioButton
+            // 
+            transparencyRadioButton.AutoSize = true;
+            transparencyRadioButton.Location = new Point(6, 72);
+            transparencyRadioButton.Name = "transparencyRadioButton";
+            transparencyRadioButton.Size = new Size(104, 19);
+            transparencyRadioButton.TabIndex = 2;
+            transparencyRadioButton.Text = "Прозрачность";
+            transparencyRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // mirrorRadioButton
+            // 
+            mirrorRadioButton.AutoSize = true;
+            mirrorRadioButton.Location = new Point(6, 47);
+            mirrorRadioButton.Name = "mirrorRadioButton";
+            mirrorRadioButton.Size = new Size(101, 19);
+            mirrorRadioButton.TabIndex = 1;
+            mirrorRadioButton.Text = "Зеркальность";
+            mirrorRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // nothingRadioButton
+            // 
+            nothingRadioButton.AutoSize = true;
+            nothingRadioButton.Checked = true;
+            nothingRadioButton.Location = new Point(6, 22);
+            nothingRadioButton.Name = "nothingRadioButton";
+            nothingRadioButton.Size = new Size(66, 19);
+            nothingRadioButton.TabIndex = 0;
+            nothingRadioButton.TabStop = true;
+            nothingRadioButton.Text = "Ничего";
+            nothingRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // WalsGroupBox
+            // 
+            WalsGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            WalsGroupBox.Controls.Add(farWallRadioButton);
+            WalsGroupBox.Controls.Add(bottomWallRadioButton);
+            WalsGroupBox.Controls.Add(topWallRadioButton);
+            WalsGroupBox.Controls.Add(leftWallRadioButton);
+            WalsGroupBox.Controls.Add(rightWallRadioButton);
+            WalsGroupBox.Location = new Point(552, 272);
+            WalsGroupBox.Name = "WalsGroupBox";
+            WalsGroupBox.Size = new Size(200, 152);
+            WalsGroupBox.TabIndex = 48;
+            WalsGroupBox.TabStop = false;
+            WalsGroupBox.Text = "Зеркальность стен";
+            // 
+            // farWallRadioButton
+            // 
+            farWallRadioButton.AutoSize = true;
+            farWallRadioButton.Location = new Point(6, 122);
+            farWallRadioButton.Name = "farWallRadioButton";
+            farWallRadioButton.Size = new Size(104, 19);
+            farWallRadioButton.TabIndex = 4;
+            farWallRadioButton.TabStop = true;
+            farWallRadioButton.Text = "Дальняя стена";
+            farWallRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // bottomWallRadioButton
+            // 
+            bottomWallRadioButton.AutoSize = true;
+            bottomWallRadioButton.Location = new Point(6, 97);
+            bottomWallRadioButton.Name = "bottomWallRadioButton";
+            bottomWallRadioButton.Size = new Size(102, 19);
+            bottomWallRadioButton.TabIndex = 3;
+            bottomWallRadioButton.TabStop = true;
+            bottomWallRadioButton.Text = "Нижняя стена";
+            bottomWallRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // topWallRadioButton
+            // 
+            topWallRadioButton.AutoSize = true;
+            topWallRadioButton.Location = new Point(6, 72);
+            topWallRadioButton.Name = "topWallRadioButton";
+            topWallRadioButton.Size = new Size(102, 19);
+            topWallRadioButton.TabIndex = 2;
+            topWallRadioButton.TabStop = true;
+            topWallRadioButton.Text = "Верхняя стена";
+            topWallRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // leftWallRadioButton
+            // 
+            leftWallRadioButton.AutoSize = true;
+            leftWallRadioButton.Location = new Point(6, 47);
+            leftWallRadioButton.Name = "leftWallRadioButton";
+            leftWallRadioButton.Size = new Size(90, 19);
+            leftWallRadioButton.TabIndex = 1;
+            leftWallRadioButton.TabStop = true;
+            leftWallRadioButton.Text = "Левая стена";
+            leftWallRadioButton.UseVisualStyleBackColor = true;
+            // 
+            // rightWallRadioButton
+            // 
+            rightWallRadioButton.AutoSize = true;
+            rightWallRadioButton.Location = new Point(6, 22);
+            rightWallRadioButton.Name = "rightWallRadioButton";
+            rightWallRadioButton.Size = new Size(98, 19);
+            rightWallRadioButton.TabIndex = 0;
+            rightWallRadioButton.TabStop = true;
+            rightWallRadioButton.Text = "Правая стена";
+            rightWallRadioButton.UseVisualStyleBackColor = true;
+            // 
             // Scene
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(784, 561);
+            Controls.Add(WalsGroupBox);
+            Controls.Add(figuresSettingsGroupBox);
+            Controls.Add(figuresGroupBox);
             Controls.Add(zBufferCheckBox);
             Controls.Add(panel1);
             Margin = new Padding(3, 2, 3, 2);
             Name = "Scene";
             Text = "Cornish Room";
             SizeChanged += Scene_SizeChanged;
-            contextMenuStrip1.ResumeLayout(false);
+            figuresGroupBox.ResumeLayout(false);
+            figuresGroupBox.PerformLayout();
+            figuresSettingsGroupBox.ResumeLayout(false);
+            figuresSettingsGroupBox.PerformLayout();
+            WalsGroupBox.ResumeLayout(false);
+            WalsGroupBox.PerformLayout();
             ResumeLayout(false);
             PerformLayout();
 
@@ -102,10 +279,22 @@ namespace IndividualTask2
         #endregion
 
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem фигурыToolStripMenuItem;
-        private OpenFileDialog openFileDialog1;
         private CheckBox zBufferCheckBox;
+        private GroupBox figuresGroupBox;
+        private RadioButton vlueCubeRadioButton;
+        private RadioButton RedCuberadioButton;
+        private RadioButton greenSphereRadioButton;
+        private RadioButton yellowSphereRadioButton;
+        private GroupBox figuresSettingsGroupBox;
+        private RadioButton transparencyRadioButton;
+        private RadioButton mirrorRadioButton;
+        private RadioButton nothingRadioButton;
+        private GroupBox WalsGroupBox;
+        private RadioButton farWallRadioButton;
+        private RadioButton bottomWallRadioButton;
+        private RadioButton topWallRadioButton;
+        private RadioButton leftWallRadioButton;
+        private RadioButton rightWallRadioButton;
     }
 }
 
