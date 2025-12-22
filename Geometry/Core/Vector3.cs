@@ -58,6 +58,16 @@ namespace Geometry
             return new Vector3(X / length, Y / length, Z / length);
         }
 
+        public void Normalize()
+        {
+            float length = (float)Math.Sqrt(X * X + Y * Y + Z * Z);
+            if (length == 0)
+                throw new InvalidOperationException("Невозможно нормализовать нулевой вектор");
+            this.X = X / length;
+            this.Y = Y / length;
+            this.Z = Z / length;
+        }
+
         public float Length()
         {
             return (float)Math.Sqrt(X * X + Y * Y + Z * Z);

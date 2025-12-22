@@ -18,6 +18,7 @@ namespace IndividualTask2
     {
         private Camera cam;
         public List<Polyhedron> polyhedrons = new List<Polyhedron>();
+        public List<LightSource> lightSources = new List<LightSource>();
         internal Renderer renderer;
 
         private LightSource firstLightSource;
@@ -26,7 +27,8 @@ namespace IndividualTask2
         public Polyhedron firstCube;
         public Polyhedron secondCube;
 
-        private bool useZBufferRendering = true;
+
+        private bool useZBufferRendering = false;
 
         private void CreateEmptyRoom()
         {
@@ -65,11 +67,13 @@ namespace IndividualTask2
         private void CreateFirstLightSource()
         {
             firstLightSource = new LightSource(0f, 10f, 0f, Color.White);
+            lightSources.Add(firstLightSource);
         }
 
         private void CreateSecondLightSource()
         {
-            secondLightSource = new LightSource(-5f, 5f, 0f, Color.Red);
+            secondLightSource = new LightSource(-10f, 3f, 0f, Color.White);
+            lightSources.Add(secondLightSource);
         }
 
 
@@ -113,19 +117,23 @@ namespace IndividualTask2
             }
             else
             {
-                PointF? lightPointNullable = cam.ProjectPoint2D(firstLightSource);
-                if (lightPointNullable.HasValue)
+                foreach (LightSource lightSource in lightSources)
                 {
-                    PointF lightPoint = lightPointNullable.Value;
-                    Color lightColor = Color.FromArgb((int)(firstLightSource.Color.X * 255), (int)(firstLightSource.Color.Y * 255), (int)(firstLightSource.Color.Z * 255));
-
-                    int lightPointSize = 12;
-
-                    using (var brush = new SolidBrush(lightColor))
+                    PointF? lightPointNullable = cam.ProjectPoint2D(lightSource);
+                    if (lightPointNullable.HasValue)
                     {
-                        g.FillEllipse(brush, lightPoint.X - lightPointSize / 2, lightPoint.Y - lightPointSize / 2, lightPointSize, lightPointSize);
+                        PointF lightPoint = lightPointNullable.Value;
+                        Color lightColor = Color.FromArgb((int)(lightSource.Color.X * 255), (int)(lightSource.Color.Y * 255), (int)(lightSource.Color.Z * 255));
+
+                        int lightPointSize = 12;
+
+                        using (var brush = new SolidBrush(lightColor))
+                        {
+                            g.FillEllipse(brush, lightPoint.X - lightPointSize / 2, lightPoint.Y - lightPointSize / 2, lightPointSize, lightPointSize);
+                        }
                     }
                 }
+                
 
                 for (int i = 0; i < polyhedrons.Count; i++)
                 {
