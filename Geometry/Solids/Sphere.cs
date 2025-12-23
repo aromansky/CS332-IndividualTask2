@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Geometry
 {
-    public class Sphere: Figure
+    public class Sphere: IFigure
     {
         public float Radius { get; private set; }
         public Point3D Center { get; private set; }

@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Geometry
 {
-    public class Polyhedron : ICloneable
+    public class Polyhedron : ICloneable, IFigure
     {
         public String Name { get; set; } = "Polyhedron";
         internal List<Face> faces;
@@ -226,6 +226,70 @@ namespace Geometry
             {
                 faces[i].SetColor(new Vector3(col));
             }
+        }
+
+        /// <summary>
+        /// Алгоритм Моллера - Трумбора для определения пересечения луча и треугольника
+        /// </summary>
+        public float TriangleIntersecrion(Ray ray, Point3D p0, Point3D p1, Point3D p2, float eps = 0.0001f)
+        {
+            Vector3 e1 = p1 - p0;
+            Vector3 e2 = p2 - p0;
+
+            // Вектор нормали к плоскости
+            Vector3 pvec = Vector3.Cross(ray.Direction, e2);
+            float det = Vector3.Dot(e1, pvec);
+
+            // Луч параллелен плоскости
+            if (Math.Abs(det) < eps)
+                return 0;
+
+            float inv_det = 1 / det;
+            Vector3 tvec = ray.Start - p0;
+            float u = Vector3.Dot(tvec, pvec) * inv_det;
+            if (u < 0 || u > 1)
+                return 0;
+
+            Vector3 qvec = Vector3.Cross(tvec, e1);
+            float v = Vector3.Dot(tvec, qvec) * inv_det;
+            if (v < 0 || u + v > 1)
+                return 0;
+
+            return Vector3.Dot(e2, qvec) * inv_det;
+        }
+
+        public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal)
+        {
+            distance = float.MaxValue;
+            normal = new Vector3(0, 0, 0);
+            int indFace = -1; // индекс грани, которую пересек луч
+
+            for(int i = 0; i < Faces.Count; i++)
+            {
+                Face face = Faces[i];
+                float intersect = TriangleIntersecrion(ray, face.Vertices[0], face.vertices[1], face.Vertices[2]);
+                if (intersect != 0 && intersect < distance)
+                {
+                    indFace = i;
+                    distance = intersect;
+                }
+
+                intersect = TriangleIntersecrion(ray, face.Vertices[0], face.vertices[2], face.Vertices[3]);
+                if (intersect != 0 && intersect < distance)
+                {
+                    indFace = i;
+                    distance = intersect;
+                }
+            }
+
+            if (distance == float.MaxValue)
+            {
+                distance = 0;
+                return false;
+            }
+
+            normal = Faces[indFace].NormalVector;
+            return true;
         }
     }
 }
