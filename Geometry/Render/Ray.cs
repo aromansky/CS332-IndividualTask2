@@ -27,7 +27,7 @@ namespace Geometry
 
         public Point3D GetPoint(float distaince)
         {
-            return new Point3D(Start.X + Direction.X * distaince, Start.Y + Direction.Y * distaince, Start.Y + Direction.Y * distaince);
+            return new Point3D(Start.X + Direction.X * distaince, Start.Y + Direction.Y * distaince, Start.Z + Direction.Z * distaince);
         }
     }
 }
