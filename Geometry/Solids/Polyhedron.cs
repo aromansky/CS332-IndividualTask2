@@ -226,6 +226,8 @@ namespace Geometry
             for (int i = 0; i < Faces.Count; i++)
             {
                 faces[i].SetColor(new Vector3(col));
+                faces[i].Material = new Material();
+                faces[i].Material.Color = new Vector3(col);
             }
         }
 

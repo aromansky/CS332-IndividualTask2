@@ -14,6 +14,7 @@ namespace Geometry
         public Vector3 ObjectColor { get; private set; } = new Vector3(Color.White);
         public Vector3 NormalVector { get; private set; }
         public bool NormalInverted { get; private set; } = false;
+        public Material Material { get; set; }
 
         public MyImage Texture { get; private set; }
 
