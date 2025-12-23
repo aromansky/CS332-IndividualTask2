@@ -12,7 +12,7 @@ namespace Geometry
         /// </summary>
         public List<Vertex> Vertices => vertices.Select(v => (Vertex)v.Clone()).ToList();
         public Vector3 ObjectColor { get; private set; } = new Vector3(Color.White);
-        public Vector3 NormalVector { get; private set; }
+        public Vector3 NormalVector { get; set; }
         public bool NormalInverted { get; private set; } = false;
         public Material Material { get; set; }
 
@@ -44,7 +44,7 @@ namespace Geometry
         private void InitFace(List<Point3D> points, List<PointF> uvs, Vector3? normalVector, Color? col)
         {
             this.vertices = new List<Vertex>();
-            points = points.Distinct().ToList();
+            //points = points.Distinct().ToList();
 
             for (int i = 0; i < points.Count; i++)
             {

@@ -94,51 +94,41 @@ namespace Geometry
 
                 if (!currentRayNode.IntersectionsFound)
                 {
-                    //float minDistance = float.MaxValue;
-                    //Vector3 nearNormal = new Vector3();
-                    //Material nearMaterial = new Material();
+                    float minDistance = float.MaxValue;
+                    Vector3 nearNormal = new Vector3();
+                    Material nearMaterial = new Material();
 
-                    //foreach (IFigure figure in figures)
-                    //{
-                    //    if (figure.FigureIntersection(currentRay, out float distance, out Vector3 normal, eps) && distance < minDistance)
-                    //    {
-                    //        minDistance = distance;
-                    //        nearNormal = normal;
-                    //        nearMaterial = figure.Material;
-                    //    }
-                    //}
+                    foreach (IFigure figure in figures)
+                    {
+                        if (figure.FigureIntersection(currentRay, out float distance, out Vector3 normal, eps) && distance < minDistance)
+                        {
+                            minDistance = distance;
+                            nearNormal = normal;
+                            nearMaterial = figure.Material;
+                        }
+                    }
 
-                    //if (Math.Abs(minDistance) < eps || minDistance == float.MaxValue)
-                    //{
-                    //    currentRayNode.hasReflection = -1;
-                    //    currentRayNode.hasRefraction = -1;
-                    //    s.Pop();
-                    //    continue;
-                    //}
+                    if (Math.Abs(minDistance) < eps || minDistance == float.MaxValue)
+                    {
+                        currentRayNode.hasReflection = -1;
+                        currentRayNode.hasRefraction = -1;
+                        s.Pop();
+                        continue;
+                    }
 
 
-                    ////если угол между нормалью к поверхности объекта и направлением луча положительный, => угол острый, => луч выходит из объекта в среду
-                    //if (Vector3.Dot(currentRay.Direction, nearNormal) > 0)
-                    //{
-                    //    nearNormal *= -1;
-                    //    currentRayNode.IsExiting = true;
-                    //}
+                    //если угол между нормалью к поверхности объекта и направлением луча положительный, => угол острый, => луч выходит из объекта в среду
+                    if (Vector3.Dot(currentRay.Direction, nearNormal) > 0)
+                    {
+                        nearNormal *= -1;
+                        currentRayNode.IsExiting = true;
+                    }
 
-                    //currentRayNode.IntersectionsFound = true;
-                    //currentRayNode.HitPoint = currentRay.GetPoint(minDistance);
-                    //currentRayNode.Normal = nearNormal;
-                    //currentRayNode.HitMaterial = nearMaterial;
-
-                    Vector3 n = currentRayNode.Normal;
-
-                    // Переводим диапазон [-1, 1] в [0, 1]
-                    return new Vector3(
-                        (n.X + 1.0f) * 0.5f,
-                        (n.Y + 1.0f) * 0.5f,
-                        (n.Z + 1.0f) * 0.5f
-                    );
+                    currentRayNode.IntersectionsFound = true;
+                    currentRayNode.HitPoint = currentRay.GetPoint(minDistance);
+                    currentRayNode.Normal = nearNormal;
+                    currentRayNode.HitMaterial = nearMaterial;
                 }
-                return new Vector3(0, 0, 0);
                 // теневые лучи
                 if (!currentRayNode.isLocalLightingCalculated)
                 {

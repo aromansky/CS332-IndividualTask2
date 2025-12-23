@@ -38,7 +38,7 @@ namespace IndividualTask2
 
             for(int i = 0; i < poly.Faces.Count; i++)
             {
-                if (i == 3) continue;
+                //if (i == 3) continue;
                 figures.Add(poly.Faces[i]);
             }
         }
@@ -106,7 +106,7 @@ namespace IndividualTask2
             //CreateSecondLightSource();
 
             cam = new Camera(
-                new Point3D(0, 0, 20),
+                new Point3D(0, 0, 10),
                 new Point3D(0, 0, 0),
                 panel1.Width, panel1.Height
                 );
@@ -129,7 +129,7 @@ namespace IndividualTask2
 
         private async void Render_Click(object sender, EventArgs e)
         {
-            image = RayTracing.ComputeRayTracing(cam, figures, lightSources, panel1.Width, panel1.Height, 8, 0.1f);
+            image = RayTracing.ComputeRayTracing(cam, figures, lightSources, panel1.Width, panel1.Height, 8, 1f);
             progressBar.Maximum = image.Width * image.Height;
 
             panel1.BackgroundImage = image.Img;

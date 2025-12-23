@@ -11,7 +11,7 @@ namespace Geometry
     {
         public Point3D Position { get; set; }
         public Vector3 ViewDirection { get; set; }
-        public float FovDegrees { get; set; } = 60f;
+        public float FovDegrees { get; set; } = 90f;
         public ProjectionMode Mode { get; set; } = ProjectionMode.Perspective;
         public Point3D Target { get; set; } = new Point3D(0, 0, 0);
 
