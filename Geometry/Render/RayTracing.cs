@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,8 +13,7 @@ namespace Geometry
         {
             public Ray ray = ray;
             public int iteration = iter;
-
-            public RayTracingNode parent = null;
+            public float k = 0;
 
             public int hasReflection = 0; // 0 - не известно, -1 - не имеет, 1 - имеет
             public RayTracingNode reflectionNode = null;
@@ -48,19 +48,20 @@ namespace Geometry
         /// Расчёт дерева лучей для одного пикселя
         /// </summary>
         /// <param name="ray">Первичный луч</param>
-        public static Vector3 ComputeRayTracingForPixel(Ray ray, List<IFigure> figures, List<LightSource> lights)
+        public static Vector3 ComputeRayTracingForPixel(Ray ray, List<IFigure> figures, List<LightSource> lights, int maxDepth = 8)
         {
             Stack<RayTracingNode> s = new Stack<RayTracingNode>();
             s.Push(new RayTracingNode(ray, 0));
 
             Material nearMaterial = new Material();
+            RayTracingNode currentRayNode = null;
+
             while (s.Count() != 0)
             {
-                RayTracingNode currentRayNode = s.Peek();
+                currentRayNode = s.Peek();
                 Ray currentRay = currentRayNode.ray;
 
-                // TODO
-                if (currentRayNode.hasReflection != 0 && currentRayNode.hasRefraction != 0)
+                if (currentRayNode.hasReflection != 0 && currentRayNode.hasRefraction != 0 || currentRayNode.iteration == maxDepth)
                 {
                     s.Pop();
                     continue;
@@ -68,8 +69,12 @@ namespace Geometry
 
                 if (currentRayNode.hasReflection == 1)
                 {
-                    if (currentRayNode.parent != null)
-                        currentRayNode.color += 
+                    currentRayNode.color += currentRayNode.reflectionNode.color * currentRayNode.reflectionNode.k;
+                }
+
+                if (currentRayNode.hasRefraction == 1)
+                {
+                    currentRayNode.color += currentRayNode.refractionNode.color * currentRayNode.refractionNode.k;
                 }
 
                 float minDistance = float.MaxValue;
@@ -105,11 +110,11 @@ namespace Geometry
                 {
                     // амбиентный свет
                     Vector3 ambient = light.Color * nearMaterial.Ambient;
-                    ambient.X += ambient.X * nearMaterial.Color.X;
-                    ambient.Y += ambient.Y * nearMaterial.Color.Y;
-                    ambient.Z += ambient.Z * nearMaterial.Color.Z;
+                    ambient.X *= nearMaterial.Color.X;
+                    ambient.Y *= nearMaterial.Color.Y;
+                    ambient.Z *= nearMaterial.Color.Z;
 
-                    currentRayNode.color = ambient;
+                    currentRayNode.color += ambient;
                     
                     Ray shadowRay = new Ray(intersectionPoint, light.GetCoords() - intersectionPoint);
                     shadowRay.Direction.Normalize();
@@ -131,7 +136,7 @@ namespace Geometry
                     RayTracingNode node = new RayTracingNode(reflectRay, currentRayNode.iteration + 1);
                     currentRayNode.reflectionNode = node;
                     currentRayNode.hasReflection = 1;
-                    node.parent = currentRayNode;
+                    node.k = nearMaterial.Reflecrion;
 
                     s.Push(node);
 
@@ -148,7 +153,7 @@ namespace Geometry
                     else
                         eta = 1 / nearMaterial.Environment;
 
-                    float sclr = Vector3.Dot(nearNormal, ray.Direction);
+                    float sclr = Vector3.Dot(nearNormal, currentRay.Direction);
                     float k = 1 - eta * eta * (1 - sclr * sclr);
                     if (k >= 0)
                     {
@@ -157,11 +162,11 @@ namespace Geometry
                         Ray refractRay = new Ray(intersectionPoint, T);
 
                         RayTracingNode node = new RayTracingNode(refractRay, currentRayNode.iteration + 1);
+                        node.k = nearMaterial.Refraction;
                         s.Push(node);
 
                         currentRayNode.refractionNode = node;
                         currentRayNode.hasRefraction = 1;
-                        node.parent = currentRayNode;
                     }
                     continue;
                 }
@@ -172,12 +177,21 @@ namespace Geometry
                 s.Pop();
             }
 
-            return resColor;
+            return currentRayNode.color;
         }
 
-        public static void ComputeRayTracing(Camera cam, int width, int height)
+        public static void ComputeRayTracing(Camera cam, List<IFigure> figures, List<LightSource> light, MyImage img)
         {
-            
+            img.Lock();
+            for (int i = 0; i < img.Width; i++)
+                for (int j = 0; j < img.Height; j++)
+                {
+                    Ray r = cam.GetRay(i, j);
+                    Vector3 color = ComputeRayTracingForPixel(r, figures, light);
+                    img.SetPixel(i, j, Color.FromArgb(1, (int)color.X, (int)color.Y, (int)color.Z));
+                }
+
+            img.Unlock();
         }
     }
 }

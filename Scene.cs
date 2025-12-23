@@ -63,6 +63,15 @@ namespace IndividualTask2
             polyhedrons.Add(poly);
         }
 
+        public void CreateFirstSphere()
+        {
+            
+        }
+
+        public void CreateSecondSphere()
+        {
+
+        }
 
         private void CreateFirstLightSource()
         {
