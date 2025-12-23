@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.ComponentModel;
+using System.Drawing;
 using System.Text;
 
 namespace Geometry
@@ -8,7 +9,7 @@ namespace Geometry
         public String Name { get; set; } = "Polyhedron";
         internal List<Face> faces;
         public Material Material { get; set; }
-        public List<Face> Faces { get { return faces.Select(f => (Face)f.Clone()).ToList(); } }
+        public List<Face> Faces { get { return faces; } }
 
         public Polyhedron(List<Face> faces)
         {
@@ -214,11 +215,32 @@ namespace Geometry
         public void ColorFacesAutomatically()
         {
             faces[0].SetColor(new Vector3(Color.Red));
+            faces[0].Material = new Material();
+            faces[0].Material.Color = new Vector3(Color.Red);
+            // Грань 1
             faces[1].SetColor(new Vector3(Color.Gray));
+            faces[1].Material = new Material();
+            faces[1].Material.Color = new Vector3(Color.Gray);
+
+            // Грань 2
             faces[2].SetColor(new Vector3(Color.Aqua));
+            faces[2].Material = new Material();
+            faces[2].Material.Color = new Vector3(Color.Aqua);
+
+            // Грань 3
             faces[3].SetColor(new Vector3(Color.White));
+            faces[3].Material = new Material();
+            faces[3].Material.Color = new Vector3(Color.White);
+
+            // Грань 4
             faces[4].SetColor(new Vector3(Color.Purple));
+            faces[4].Material = new Material();
+            faces[4].Material.Color = new Vector3(Color.Purple);
+
+            // Грань 5
             faces[5].SetColor(new Vector3(Color.White));
+            faces[5].Material = new Material();
+            faces[5].Material.Color = new Vector3(Color.White);
         }
 
         public void ColorFacesMonotonously(Color col)
@@ -228,13 +250,15 @@ namespace Geometry
                 faces[i].SetColor(new Vector3(col));
                 faces[i].Material = new Material();
                 faces[i].Material.Color = new Vector3(col);
+                Material = new Material();
+                Material.Color = new Vector3(col);
             }
         }
 
         /// <summary>
         /// Алгоритм Моллера - Трумбора для определения пересечения луча и треугольника
         /// </summary>
-        public float TriangleIntersecrion(Ray ray, Point3D p0, Point3D p1, Point3D p2, float eps = 0.0001f)
+        public float TriangleIntersecrion(Ray ray, Point3D p0, Point3D p1, Point3D p2, float eps)
         {
             Vector3 e1 = p1 - p0;
             Vector3 e2 = p2 - p0;
@@ -254,14 +278,17 @@ namespace Geometry
                 return 0;
 
             Vector3 qvec = Vector3.Cross(tvec, e1);
-            float v = Vector3.Dot(tvec, qvec) * inv_det;
+            float v = Vector3.Dot(ray.Direction, qvec) * inv_det;
             if (v < 0 || u + v > 1)
                 return 0;
 
-            return Vector3.Dot(e2, qvec) * inv_det;
+            float t = Vector3.Dot(e2, qvec) * inv_det;
+            if (t > eps)
+                return t;
+            return 0;
         }
 
-        public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal)
+        public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal, float eps)
         {
             distance = float.MaxValue;
             normal = new Vector3(0, 0, 0);
@@ -270,14 +297,14 @@ namespace Geometry
             for(int i = 0; i < Faces.Count; i++)
             {
                 Face face = Faces[i];
-                float intersect = TriangleIntersecrion(ray, face.Vertices[0], face.vertices[1], face.Vertices[2]);
+                float intersect = TriangleIntersecrion(ray, face.Vertices[0], face.vertices[1], face.Vertices[2], eps);
                 if (intersect != 0 && intersect < distance)
                 {
                     indFace = i;
                     distance = intersect;
                 }
 
-                intersect = TriangleIntersecrion(ray, face.Vertices[0], face.vertices[2], face.Vertices[3]);
+                intersect = TriangleIntersecrion(ray, face.Vertices[0], face.vertices[2], face.Vertices[3], eps);
                 if (intersect != 0 && intersect < distance)
                 {
                     indFace = i;
@@ -287,7 +314,6 @@ namespace Geometry
 
             if (distance == float.MaxValue)
             {
-                distance = 0;
                 return false;
             }
 

@@ -33,7 +33,6 @@ namespace IndividualTask2
         /// </summary>
         private void InitializeComponent()
         {
-            panel1 = new Panel();
             figuresGroupBox = new GroupBox();
             greenSphereRadioButton = new RadioButton();
             yellowSphereRadioButton = new RadioButton();
@@ -50,21 +49,13 @@ namespace IndividualTask2
             leftWallRadioButton = new RadioButton();
             rightWallRadioButton = new RadioButton();
             Render = new Button();
+            progressBar = new ProgressBar();
+            panel1 = new PictureBox();
             figuresGroupBox.SuspendLayout();
             figuresSettingsGroupBox.SuspendLayout();
             WalsGroupBox.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)panel1).BeginInit();
             SuspendLayout();
-            // 
-            // panel1
-            // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            panel1.BackColor = SystemColors.ActiveBorder;
-            panel1.Location = new Point(10, 11);
-            panel1.Margin = new Padding(3, 2, 3, 2);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(536, 539);
-            panel1.TabIndex = 0;
-            panel1.Paint += panel1_Paint;
             // 
             // figuresGroupBox
             // 
@@ -245,21 +236,38 @@ namespace IndividualTask2
             Render.Location = new Point(558, 423);
             Render.Name = "Render";
             Render.Size = new Size(194, 23);
-            Render.TabIndex = 49;
+            Render.TabIndex = 0;
             Render.Text = "Рендер";
             Render.UseVisualStyleBackColor = true;
             Render.Click += Render_Click;
+            // 
+            // progressBar
+            // 
+            progressBar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            progressBar.Location = new Point(558, 452);
+            progressBar.Name = "progressBar";
+            progressBar.Size = new Size(194, 23);
+            progressBar.TabIndex = 50;
+            // 
+            // panel1
+            // 
+            panel1.Location = new Point(12, 12);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(534, 463);
+            panel1.TabIndex = 51;
+            panel1.TabStop = false;
             // 
             // Scene
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 561);
+            ClientSize = new Size(784, 491);
+            Controls.Add(panel1);
+            Controls.Add(progressBar);
             Controls.Add(Render);
             Controls.Add(WalsGroupBox);
             Controls.Add(figuresSettingsGroupBox);
             Controls.Add(figuresGroupBox);
-            Controls.Add(panel1);
             Margin = new Padding(3, 2, 3, 2);
             Name = "Scene";
             Text = "Cornish Room";
@@ -270,13 +278,12 @@ namespace IndividualTask2
             figuresSettingsGroupBox.PerformLayout();
             WalsGroupBox.ResumeLayout(false);
             WalsGroupBox.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)panel1).EndInit();
             ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
         private GroupBox figuresGroupBox;
         private RadioButton vlueCubeRadioButton;
         private RadioButton RedCuberadioButton;
@@ -293,6 +300,8 @@ namespace IndividualTask2
         private RadioButton leftWallRadioButton;
         private RadioButton rightWallRadioButton;
         private Button Render;
+        private ProgressBar progressBar;
+        private PictureBox panel1;
     }
 }
 

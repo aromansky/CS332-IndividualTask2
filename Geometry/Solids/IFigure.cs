@@ -8,7 +8,7 @@ namespace Geometry
 {
     public interface IFigure
     {
-        public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal);
+        public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal, float eps);
         public Material Material { get; set; }
     }
 }

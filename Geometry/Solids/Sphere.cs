@@ -23,7 +23,7 @@ namespace Geometry
         /// <summary>
         /// Определяет, пересекается ли луч со сферой и определяет дистанцию от начала луча до точки пересечения
         /// </summary>
-        public bool SphereIntersection(Ray ray, out float distance, float eps = 0.0001f)
+        public bool SphereIntersection(Ray ray, out float distance, float eps)
         {
             distance = 0;
 
@@ -62,11 +62,11 @@ namespace Geometry
         /// <summary>
         /// Определяет, пересекается ли луч со сферой, определяет дистанцию от начала луча до точки пересечения и нормаль
         /// </summary>
-        public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal)
+        public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal, float eps)
         {
             normal = new Vector3(0, 0, 0);
             
-            if (SphereIntersection(ray, out distance))
+            if (SphereIntersection(ray, out distance, eps))
             {
                 Point3D intersectionPoint = new Point3D(
                     ray.Start.X + ray.Direction.X * distance,

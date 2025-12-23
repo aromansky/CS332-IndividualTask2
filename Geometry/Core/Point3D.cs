@@ -21,6 +21,11 @@ namespace Geometry
             (this.X, this.Y, this.Z) = other.GetCoords();
         }
 
+        public Point3D(Vector3 other)
+        {
+            (this.X, this.Y, this.Z) = (other.X, other.Y, other.Z);
+        }
+
         public (float x, float y, float z) GetCoords()
         {
             return (X, Y, Z);

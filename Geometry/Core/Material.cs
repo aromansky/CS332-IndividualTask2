@@ -21,17 +21,17 @@ namespace Geometry
         /// <summary>
         /// коэффициент преломления среды
         /// </summary>
-        public float Environment { get; set; }
+        public float Environment { get; set; } = 1;
 
         /// <summary>
         /// коэффициент принятия фонового освещения
         /// </summary>
-        public float Ambient { get; set; }
+        public float Ambient { get; set; } = 0.1f;
 
         /// <summary>
         /// коэффициент принятия диффузного освещения
         /// </summary>
-        public float Diffuse { get; set; }
+        public float Diffuse { get; set; } = 0.7f;
 
         /// <summary>
         /// цвет материала
@@ -55,6 +55,11 @@ namespace Geometry
             Ambient = other.Ambient;
             Diffuse = other.Diffuse;
             Color = other.Color;
+        }
+
+        public Material(Vector3 col)
+        {
+            Color = col;
         }
 
         public Material() { }

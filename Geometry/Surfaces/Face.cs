@@ -2,7 +2,7 @@
 
 namespace Geometry
 {
-    public class Face: ICloneable
+    public class Face: ICloneable, IFigure
     {
 
         internal List<Vertex> vertices;
@@ -129,6 +129,65 @@ namespace Geometry
             return dot > 0;
         }
 
+        /// <summary>
+        /// Алгоритм Моллера - Трумбора для определения пересечения луча и треугольника
+        /// </summary>
+        public float TriangleIntersecrion(Ray ray, Point3D p0, Point3D p1, Point3D p2, float eps)
+        {
+            Vector3 e1 = p1 - p0;
+            Vector3 e2 = p2 - p0;
+
+
+            // Вектор нормали к плоскости
+            Vector3 pvec = Vector3.Cross(ray.Direction, e2);
+            float det = Vector3.Dot(e1, pvec);
+
+            // Луч параллелен плоскости
+            if (Math.Abs(det) < eps)
+                return 0;
+
+            float inv_det = 1 / det;
+            Vector3 tvec = ray.Start - p0;
+            float u = Vector3.Dot(tvec, pvec) * inv_det;
+            if (u < 0 || u > 1)
+                return 0;
+
+            Vector3 qvec = Vector3.Cross(tvec, e1);
+            float v = Vector3.Dot(ray.Direction, qvec) * inv_det;
+            if (v < 0 || u + v > 1)
+                return 0;
+
+            float t = Vector3.Dot(e2, qvec) * inv_det;
+            if (t > eps)
+                return t;
+            return 0;
+        }
+
+        public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal, float eps)
+        {
+            distance = float.MaxValue;
+            normal = new Vector3(0, 0, 0);
+
+            float intersect = TriangleIntersecrion(ray, vertices[0], vertices[1], vertices[2], eps);
+            if (intersect != 0 && intersect < distance)
+            {
+                distance = intersect;
+            }
+
+            intersect = TriangleIntersecrion(ray, vertices[0], vertices[2], vertices[3], eps);
+            if (intersect != 0 && intersect < distance)
+            {
+                distance = intersect;
+            }
+
+            if (distance == float.MaxValue)
+            {
+                return false;
+            }
+
+            normal = NormalVector;
+            return true;
+        }
         public object Clone() => new Face(this);
     }
 }

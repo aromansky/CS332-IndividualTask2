@@ -49,6 +49,14 @@ namespace Geometry
             Height = Img.Height;
         }
 
+        public MyImage(int width, int height) 
+        {
+            Img = new Bitmap(width, height, PixelFormat.Format32bppPArgb);
+            Width = width;
+            Height = height;
+        }
+
+
         public void Lock()
         {
             data = image.LockBits(
@@ -100,6 +108,10 @@ namespace Geometry
             pixels[position] = (byte)color.B;
             pixels[position + 1] = (byte)color.G;
             pixels[position + 2] = (byte)color.R;
+            if (bytesPerPixel == 4)
+            {
+                pixels[position + 3] = (byte)color.A;
+            }
         }
 
         public MyImage Copy()
