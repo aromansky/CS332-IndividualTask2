@@ -108,6 +108,11 @@ namespace Geometry
             return new Vector3(v.X * n, v.Y * n, v.Z * n);
         }
 
+        public static Vector3 operator *(float n, Vector3 v)
+        {
+            return new Vector3(v.X * n, v.Y * n, v.Z * n);
+        }
+
         public static Vector3 operator /(Vector3 v, float n)
         {
             return new Vector3(v.X / n, v.Y / n, v.Z / n);

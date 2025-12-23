@@ -8,13 +8,20 @@ namespace Geometry
 {
     public static class RayTracing
     {
-        private struct RayTracingNode(Ray ray, int iter, float env)
+        private class RayTracingNode(Ray ray, int iter)
         {
             public Ray ray = ray;
             public int iteration = iter;
-            public float environment = env;
-            public List<Ray> childrenRays = new List<Ray>();
-            public int childInd = -1;
+
+            public RayTracingNode parent = null;
+
+            public int hasReflection = 0; // 0 - не известно, -1 - не имеет, 1 - имеет
+            public RayTracingNode reflectionNode = null;
+
+            public int hasRefraction = 0; // 0 - не известно, -1 - не имеет, 1 - имеет
+            public RayTracingNode refractionNode = null;
+
+            public Vector3 color = new Vector3(0, 0, 0);
         }
 
         /// <summary>
@@ -44,16 +51,31 @@ namespace Geometry
         public static Vector3 ComputeRayTracingForPixel(Ray ray, List<IFigure> figures, List<LightSource> lights)
         {
             Stack<RayTracingNode> s = new Stack<RayTracingNode>();
-            s.Push(new RayTracingNode(ray, 0, 1));
+            s.Push(new RayTracingNode(ray, 0));
 
-            Material nearMaterial;
+            Material nearMaterial = new Material();
             while (s.Count() != 0)
             {
                 RayTracingNode currentRayNode = s.Peek();
                 Ray currentRay = currentRayNode.ray;
 
+                // TODO
+                if (currentRayNode.hasReflection != 0 && currentRayNode.hasRefraction != 0)
+                {
+                    s.Pop();
+                    continue;
+                }
+
+                if (currentRayNode.hasReflection == 1)
+                {
+                    if (currentRayNode.parent != null)
+                        currentRayNode.color += 
+                }
+
                 float minDistance = float.MaxValue;
-                Vector3 nearNormal;
+                Vector3 nearNormal = new Vector3();
+
+                bool refractOutOfFigure = false; //  луч преломления выходит из объекта?
 
                 foreach (IFigure figure in figures)
                 {
@@ -69,23 +91,88 @@ namespace Geometry
                 if (minDistance == 0)
                     return new Vector3(0, 0, 0);
 
-                bool shadowLightAdded = false;
+                //если угол между нормалью к поверхности объекта и направлением луча положительный, => угол острый, => луч выходит из объекта в среду
+                if (Vector3.Dot(currentRay.Direction, nearNormal) > 0)
+                {
+                    nearNormal *= -1;
+                    refractOutOfFigure = true;
+                }
+
+                Point3D intersectionPoint = currentRay.GetPoint(minDistance);
+
                 // теневые лучи
                 foreach (LightSource light in lights)
                 {
-                    Point3D intersectionPoint = currentRay.GetPoint(minDistance);
+                    // амбиентный свет
+                    Vector3 ambient = light.Color * nearMaterial.Ambient;
+                    ambient.X += ambient.X * nearMaterial.Color.X;
+                    ambient.Y += ambient.Y * nearMaterial.Color.Y;
+                    ambient.Z += ambient.Z * nearMaterial.Color.Z;
+
+                    currentRayNode.color = ambient;
+                    
                     Ray shadowRay = new Ray(intersectionPoint, light.GetCoords() - intersectionPoint);
                     shadowRay.Direction.Normalize();
 
                     // если точка освещена источниками света
                     if (PointIsVisible(shadowRay, light.GetCoords(), figures))
-                    {
-                        shadowLightAdded = true;
-
-                    }
+                        currentRayNode.color += ShadingUtils.CalculateLambertColor(light, intersectionPoint, nearNormal, nearMaterial.Color);
                 }
 
+                // луч отражения
+                if (currentRayNode.hasReflection == 0 && nearMaterial.Reflecrion != 0)
+                {
+                    Vector3 D = currentRay.Direction;
+                    D.Normalize();
+                    Vector3 N = nearNormal;
+                    Vector3 reflectVector = D - 2f * Vector3.Dot(D, N) * N;
+
+                    Ray reflectRay = new Ray(intersectionPoint, reflectVector);
+                    RayTracingNode node = new RayTracingNode(reflectRay, currentRayNode.iteration + 1);
+                    currentRayNode.reflectionNode = node;
+                    currentRayNode.hasReflection = 1;
+                    node.parent = currentRayNode;
+
+                    s.Push(node);
+
+                    continue;
+                }
+                currentRayNode.hasReflection = -1;
+
+                // луч преломлеиня
+                if (currentRayNode.hasRefraction == 0 && nearMaterial.Refraction != 0)
+                {
+                    float eta;                 //коэффициент преломления
+                    if (refractOutOfFigure) //луч выходит в среду
+                        eta = nearMaterial.Environment;
+                    else
+                        eta = 1 / nearMaterial.Environment;
+
+                    float sclr = Vector3.Dot(nearNormal, ray.Direction);
+                    float k = 1 - eta * eta * (1 - sclr * sclr);
+                    if (k >= 0)
+                    {
+                        float cos_eta = (float)Math.Sqrt(k);
+                        Vector3 T = eta * currentRay.Direction - (cos_eta + eta * Vector3.Dot(currentRay.Direction, nearNormal)) * nearNormal;
+                        Ray refractRay = new Ray(intersectionPoint, T);
+
+                        RayTracingNode node = new RayTracingNode(refractRay, currentRayNode.iteration + 1);
+                        s.Push(node);
+
+                        currentRayNode.refractionNode = node;
+                        currentRayNode.hasRefraction = 1;
+                        node.parent = currentRayNode;
+                    }
+                    continue;
+                }
+
+                currentRayNode.hasRefraction = -1;
+
+                // если нет отражения и преломления
+                s.Pop();
             }
+
+            return resColor;
         }
 
         public static void ComputeRayTracing(Camera cam, int width, int height)

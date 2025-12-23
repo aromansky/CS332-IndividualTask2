@@ -92,13 +92,6 @@ namespace Geometry
                             DrawFaceGouraudZ(shadedVertices);
                             break;
                         }
-                    case RenderMode.Phong:
-                        {
-                            Vector3 faceObjectColor = face.ObjectColor;
-                            
-                            DrawFacePhongZ(face.Vertices);
-                            break;
-                        }
                     case RenderMode.None:
                         DrawFaceZ(face, face.ObjectColor);
                         break;
@@ -274,116 +267,6 @@ namespace Geometry
             }
             texture.Unlock();
         }
-
-        public void DrawFacePhongZ(List<Vertex> faceVertices)
-        {
-            if (faceVertices.Count < 3) return;
-
-            Vertex v0 = faceVertices[0];
-            for (int i = 1; i < faceVertices.Count - 1; i++)
-            {
-                Vertex v1 = faceVertices[i];
-                Vertex v2 = faceVertices[i + 1];
-                DrawTrianglePhongZ(v0, v1, v2);
-            }
-        }
-
-        private void DrawTrianglePhongZ(Vertex v0, Vertex v1, Vertex v2)
-        {
-            PointF? p0 = camera.ProjectPoint2D(v0);
-            PointF? p1 = camera.ProjectPoint2D(v1);
-            PointF? p2 = camera.ProjectPoint2D(v2);
-
-            if (!p0.HasValue || !p1.HasValue || !p2.HasValue)
-                return;
-
-            PointF a = p0.Value;
-            PointF b = p1.Value;
-            PointF c = p2.Value;
-
-            int minX = (int)Math.Max(0, Math.Min(a.X, Math.Min(b.X, c.X)));
-            int maxX = (int)Math.Min(width - 1, Math.Max(a.X, Math.Max(b.X, c.X)));
-            int minY = (int)Math.Max(0, Math.Min(a.Y, Math.Min(b.Y, c.Y)));
-            int maxY = (int)Math.Min(height - 1, Math.Max(a.Y, Math.Max(b.Y, c.Y)));
-
-            // Проекции вершин для Z-буфера и интерполяции позиции
-            Point3D p0_3 = camera.ProjectPoint(v0);
-            Point3D p1_3 = camera.ProjectPoint(v1);
-            Point3D p2_3 = camera.ProjectPoint(v2);
-
-            // Начальные 3D позиции вершин 
-            Point3D pos0 = v0;
-            Point3D pos1 = v1;
-            Point3D pos2 = v2;
-
-            float area = EdgeFunction(a, b, c);
-            if (Math.Abs(area) < 1e-6f) return;
-
-            for (int y = minY; y <= maxY; y++)
-            {
-                for (int x = minX; x <= maxX; x++)
-                {
-                    var p = new PointF(x + 0.5f, y + 0.5f);
-
-                    float w0 = EdgeFunction(b, c, p);
-                    float w1 = EdgeFunction(c, a, p);
-                    float w2 = EdgeFunction(a, b, p);
-
-                    if (w0 * area >= 0 && w1 * area >= 0 && w2 * area >= 0)
-                    {
-                        // Барицентрические координаты
-                        w0 /= area;
-                        w1 /= area;
-                        w2 /= area;
-
-                        // 1. Интерполяция Z (глубина)
-                        float z = w0 * p0_3.Z + w1 * p1_3.Z + w2 * p2_3.Z;
-
-                        if (camera.Mode == ProjectionMode.Perspective)
-                        {
-                            z = 1 / z;
-                        }
-
-                        if (z < zBuffer[x, y])
-                        {
-                            zBuffer[x, y] = z;
-
-                            // 2. Интерполяция 3D-позиции
-                            Point3D interpolatedPosition = pos0 * w0 + pos1 * w1 + pos2 * w2;
-
-                            // 3. Интерполяция Нормали 
-                            Vector3 interpolatedNormal = v0.Normal * w0 + v1.Normal * w1 + v2.Normal * w2;
-
-                            // 4. Нормализация интерполированной нормали
-                            Vector3 N_pixel = interpolatedNormal.Normalized();
-
-                            // 5. Вычисление цвета с помощью модели Фонга с туншейдингом
-                            Vector3 faceObjectColor = v0.Color;
-                            Vector3 materialKs = v0.MaterialKs;
-                            float shininess = v0.Shininess;
-
-                            Vector3 colorVector = ShadingUtils.CalculatePhongColor(
-                                this.Light,
-                                new Vertex(interpolatedPosition) { Normal = N_pixel },
-                                faceObjectColor,
-                                camera.Position,
-                                materialKs,
-                                shininess
-                            );
-
-                            Color color = Color.FromArgb(
-                                Math.Min(255, (int)(colorVector.X * 255)),
-                                Math.Min(255, (int)(colorVector.Y * 255)),
-                                Math.Min(255, (int)(colorVector.Z * 255))
-                            );
-
-                            myImage.SetPixel(x, y, color);
-                        }
-                    }
-                }
-            }
-        }
-
 
         public void DrawFaceGouraudZ(List<Vertex> shadedVertices)
         {

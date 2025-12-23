@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Geometry
 {
-    internal interface IFigure
+    public interface IFigure
     {
         public bool FigureIntersection(Ray ray, out float distance, out Vector3 normal);
         public Material Material { get; set; }
