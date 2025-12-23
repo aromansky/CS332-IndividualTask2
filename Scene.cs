@@ -59,7 +59,7 @@ namespace IndividualTask2
             Polyhedron poly = Polyhedron.CreateHexahedron();
             Transform.Apply(Transform.CreateScaleMatrix(4, 4, 4), poly);
             Transform.Apply(Transform.CreateRotationAroundYMatrix(-60), poly);
-            Transform.Apply(Transform.CreateTranslationMatrix(-5, -7f, 1f), poly);
+            Transform.Apply(Transform.CreateTranslationMatrix(-5, -8f, -4), poly);
             poly.ColorFacesMonotonously(Color.Blue);
             secondCube = poly;
             figures.Add(poly);
@@ -67,7 +67,7 @@ namespace IndividualTask2
 
         public void CreateFirstSphere()
         {
-            Sphere sphere = new Sphere(2f, new Point3D(0f, -7.5f, 0), new Material(new Vector3(Color.Yellow)));
+            Sphere sphere = new Sphere(2f, new Point3D(0f, -6f, -2), new Material(new Vector3(Color.Yellow)));
             figures.Add(sphere);
         }
 
@@ -79,13 +79,13 @@ namespace IndividualTask2
 
         private void CreateFirstLightSource()
         {
-            firstLightSource = new LightSource(0f, 0f, 0f, Color.White);
+            firstLightSource = new LightSource(0f, 9f, -5f, Color.White);
             lightSources.Add(firstLightSource);
         }
 
         private void CreateSecondLightSource()
         {
-            secondLightSource = new LightSource(-10f, 3f, 0f, Color.White);
+            secondLightSource = new LightSource(9f, 0f, 0f, Color.White);
             lightSources.Add(secondLightSource);
         }
 
@@ -96,14 +96,14 @@ namespace IndividualTask2
 
             CreateEmptyRoom();
 
-            //CreateFirstCube();
-            //CreateSecondCube();
+            CreateFirstCube();
+            CreateSecondCube();
 
-            //CreateFirstSphere();
-            //CreateSecondSphere();
+            CreateFirstSphere();
+            CreateSecondSphere();
 
-            CreateFirstLightSource();
-            //CreateSecondLightSource();
+            //CreateFirstLightSource();
+            CreateSecondLightSource();
 
             cam = new Camera(
                 new Point3D(0, 0, 10),
@@ -129,7 +129,7 @@ namespace IndividualTask2
 
         private async void Render_Click(object sender, EventArgs e)
         {
-            image = RayTracing.ComputeRayTracing(cam, figures, lightSources, panel1.Width, panel1.Height, 8, 1f);
+            image = RayTracing.ComputeRayTracing(cam, figures, lightSources, panel1.Width, panel1.Height, 8, 0.001f);
             progressBar.Maximum = image.Width * image.Height;
 
             panel1.BackgroundImage = image.Img;
