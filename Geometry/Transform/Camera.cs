@@ -231,6 +231,24 @@ namespace Geometry
             return polyhedron.Faces.Where(x => x.IsFrontFace(this)).Select(x => ProjectFace2D(x)).ToArray();
         }
 
+        public Ray GetRay(int i, int j)
+        {
+            float aspect = (float)ScreenWidth / ScreenHeight;
+            float fovRad = FovDegrees * (float)Math.PI / 180f;
 
+            // Высота и ширина экранного прямоугольника на расстоянии NearPlane
+            float halfHeight = (float)Math.Tan(fovRad / 2f) * NearPlane;
+            float halfWidth = halfHeight * aspect;
+
+            // Смещение внутри пикселя (+0.5f для центра пикселя)
+            float x = (2.0f * (i + 0.5f) / ScreenWidth - 1.0f) * halfWidth;
+            float y = (1.0f - 2.0f * (j + 0.5f) / ScreenHeight) * halfHeight;
+
+            // Формируем направление луча используя базис камеры
+            // Используем -n, так как n направлен "от сцены" к камере
+            Vector3 rayDir = (u * x) + (v * y) - (n * NearPlane);
+
+            return new Ray(Position, rayDir.Normalized());
+        }
     }
 }

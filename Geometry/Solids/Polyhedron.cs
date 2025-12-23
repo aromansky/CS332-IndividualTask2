@@ -7,6 +7,7 @@ namespace Geometry
     {
         public String Name { get; set; } = "Polyhedron";
         internal List<Face> faces;
+        public Material Material { get; set; }
         public List<Face> Faces { get { return faces.Select(f => (Face)f.Clone()).ToList(); } }
 
         public Polyhedron(List<Face> faces)

@@ -11,11 +11,13 @@ namespace Geometry
     {
         public float Radius { get; private set; }
         public Point3D Center { get; private set; }
+        public Material Material { get; set; }
 
-        public Sphere(float radius, Point3D center)
+        public Sphere(float radius, Point3D center, Material material)
         {
             Radius = radius;
             Center = center;
+            Material = material;
         }
 
         /// <summary>

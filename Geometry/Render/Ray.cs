@@ -24,5 +24,10 @@ namespace Geometry
             Start = ray.Start;
             Direction = ray.Direction;
         }
+
+        public Point3D GetPoint(float distaince)
+        {
+            return new Point3D(Start.X + Direction.X * distaince, Start.Y + Direction.Y * distaince, Start.Y + Direction.Y * distaince);
+        }
     }
 }
