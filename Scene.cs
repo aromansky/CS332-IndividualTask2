@@ -105,7 +105,7 @@ namespace IndividualTask2
             CreateSecondSphere();
 
             CreateFirstLightSource();
-            CreateSecondLightSource();
+            //CreateSecondLightSource();
 
             cam = new Camera(
                 new Point3D(0, 0, 10),
@@ -143,7 +143,7 @@ namespace IndividualTask2
             int h = panel1.Height;
 
             MyImage result = await Task.Run(() =>
-                RayTracing.ComputeRayTracing(cam, figures, lightSources, w, h, 5, 0.001f, progressIndicator)
+                RayTracing.ComputeRayTracing(cam, figures, lightSources, w, h, 15, 0.001f, progressIndicator)
             );
 
             panel1.Image = result.Img;
