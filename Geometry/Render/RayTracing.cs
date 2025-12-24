@@ -213,10 +213,13 @@ namespace Geometry
             return root.color;
         }
 
-        public static MyImage ComputeRayTracing(Camera cam, List<IFigure> figures, List<LightSource> lights, int width, int height, int maxDepth, float eps = 0.001f)
+        public static MyImage ComputeRayTracing(Camera cam, List<IFigure> figures, List<LightSource> lights, int width, int height, int maxDepth, float eps = 0.001f, IProgress<int> progress = null)
         {
             MyImage img = new MyImage(width, height);
             img.Lock();
+
+            int completedLines = 0;
+
             Parallel.For(0, img.Height, j =>
             {
                 for (int i = 0; i < img.Width; i++)
@@ -233,10 +236,16 @@ namespace Geometry
                     int b = (int)Math.Clamp(color.Z * 255, 0, 255);
                     img.SetPixel(i, j, Color.FromArgb(255, r, g, b));
                 }
+
+                if (progress != null)
+                {
+                    int current = Interlocked.Increment(ref completedLines);
+                    int percentage = (int)((float)current / img.Height * 100);
+                    progress.Report(percentage);
+                }
             });
 
             img.Unlock();
-
             return img;
         }
     }

@@ -23,8 +23,11 @@ namespace IndividualTask2
         private LightSource firstLightSource;
         private LightSource secondLightSource;
 
-        public Polyhedron firstCube;
-        public Polyhedron secondCube;
+        public Polyhedron redCube;
+        public Polyhedron blueCube;
+
+        public Sphere yellowSphere;
+        public Sphere greenSphere;
 
         public MyImage image;
 
@@ -50,7 +53,7 @@ namespace IndividualTask2
             Transform.Apply(Transform.CreateRotationAroundYMatrix(-45), poly);
             Transform.Apply(Transform.CreateTranslationMatrix(5, -7f, -6.0f), poly);
             poly.ColorFacesMonotonously(Color.Red);
-            firstCube = poly;
+            redCube = poly;
             figures.Add(poly);
         }
 
@@ -61,20 +64,20 @@ namespace IndividualTask2
             Transform.Apply(Transform.CreateRotationAroundYMatrix(-60), poly);
             Transform.Apply(Transform.CreateTranslationMatrix(-5, -8f, -4), poly);
             poly.ColorFacesMonotonously(Color.Blue);
-            secondCube = poly;
+            blueCube = poly;
             figures.Add(poly);
         }
 
         public void CreateFirstSphere()
         {
-            Sphere sphere = new Sphere(2f, new Point3D(0f, -6f, -2), new Material(new Vector3(Color.Yellow)));
-            figures.Add(sphere);
+            yellowSphere = new Sphere(2f, new Point3D(0f, -6f, -2), new Material(new Vector3(Color.Yellow)));
+            figures.Add(yellowSphere);
         }
 
         public void CreateSecondSphere()
         {
-            Sphere sphere = new Sphere(2.5f, new Point3D(5f, -1.5f, -6), new Material(new Vector3(Color.Green)));
-            figures.Add(sphere);
+            greenSphere = new Sphere(2.5f, new Point3D(5f, -1.5f, -6), new Material(new Vector3(Color.Green)));
+            figures.Add(greenSphere);
         }
 
         private void CreateFirstLightSource()
@@ -121,18 +124,30 @@ namespace IndividualTask2
             panel1.Invalidate();
         }
 
-
-        private void zBufferCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private async void Render_Click(object sender, EventArgs e)
         {
-            image = RayTracing.ComputeRayTracing(cam, figures, lightSources, panel1.Width, panel1.Height, 8, 0.001f);
-            progressBar.Maximum = image.Width * image.Height;
+            var progressIndicator = new Progress<int>(percent =>
+            {
+                if (percent > 0 && percent < 100)
+                {
+                    progressBar.Value = percent;
+                    progressBar.Value = percent - 1;
+                    progressBar.Value = percent;
+                }
+                else
+                {
+                    progressBar.Value = percent;
+                }
+            });
 
-            panel1.BackgroundImage = image.Img;
+            int w = panel1.Width;
+            int h = panel1.Height;
+
+            MyImage result = await Task.Run(() =>
+                RayTracing.ComputeRayTracing(cam, figures, lightSources, w, h, 5, 0.001f, progressIndicator)
+            );
+
+            panel1.Image = result.Img;
         }
     }
 }
