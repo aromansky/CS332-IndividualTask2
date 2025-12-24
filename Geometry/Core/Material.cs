@@ -11,12 +11,12 @@ namespace Geometry
         /// <summary>
         /// коэффициент отражения
         /// </summary>
-        public float Reflecrion { get; set; }
+        public float Reflection { get; set; } = 0;
 
         /// <summary>
         /// коэффициент преломления
         /// </summary>
-        public float Refraction { get; set; }
+        public float Refraction { get; set; } = 0;
 
         /// <summary>
         /// коэффициент преломления среды
@@ -40,7 +40,7 @@ namespace Geometry
 
         public Material(float refl, float refr, float amb, float dif, float env = 1)
         {
-            Reflecrion = refl;
+            Reflection = refl;
             Refraction = refr;
             Ambient = amb;
             Diffuse = dif;
@@ -49,7 +49,7 @@ namespace Geometry
 
         public Material(Material other)
         {
-            Reflecrion = other.Reflecrion;
+            Reflection = other.Reflection;
             Refraction = other.Refraction;
             Environment = other.Environment;
             Ambient = other.Ambient;

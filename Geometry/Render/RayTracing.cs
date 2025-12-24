@@ -155,7 +155,7 @@ namespace Geometry
                 // луч отражения
                 if (currentRayNode.hasReflection == 0)
                 {
-                    if (currentRayNode.HitMaterial.Reflecrion > 0)
+                    if (currentRayNode.HitMaterial.Reflection > 0)
                     {
                         Vector3 D = currentRay.Direction;
                         D.Normalize();
@@ -166,7 +166,7 @@ namespace Geometry
                         RayTracingNode node = new RayTracingNode(reflectRay, currentRayNode.iteration + 1);
                         currentRayNode.reflectionNode = node;
                         currentRayNode.hasReflection = 1;
-                        node.k = currentRayNode.HitMaterial.Reflecrion;
+                        node.k = currentRayNode.HitMaterial.Reflection;
 
                         s.Push(node);
 

@@ -39,9 +39,8 @@ namespace IndividualTask2
             poly.InvertNormals();
             poly.ColorFacesAutomatically();
 
-            for(int i = 0; i < poly.Faces.Count; i++)
+            for (int i = 0; i < poly.Faces.Count; i++)
             {
-                //if (i == 3) continue;
                 figures.Add(poly.Faces[i]);
             }
         }
@@ -105,7 +104,7 @@ namespace IndividualTask2
             CreateFirstSphere();
             CreateSecondSphere();
 
-            //CreateFirstLightSource();
+            CreateFirstLightSource();
             CreateSecondLightSource();
 
             cam = new Camera(
@@ -148,6 +147,151 @@ namespace IndividualTask2
             );
 
             panel1.Image = result.Img;
+        }
+
+
+        private IFigure GetCurrentFigure()
+        {
+            if (RedCubeRadioButton.Checked) return redCube;
+            if (blueCubeRadioButton.Checked) return blueCube;
+            if (yellowSphereRadioButton.Checked) return yellowSphere;
+            return greenSphere;
+        }
+
+        private void RedCubeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (RedCubeRadioButton.Checked) UpdateMaterialUI(redCube.Material);
+        }
+
+        private void blueCubeRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (blueCubeRadioButton.Checked) UpdateMaterialUI(blueCube.Material);
+        }
+
+        private void yellowSphereRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (yellowSphereRadioButton.Checked) UpdateMaterialUI(yellowSphere.Material);
+        }
+
+        private void greenSphereRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (greenSphereRadioButton.Checked) UpdateMaterialUI(greenSphere.Material);
+        }
+
+        private void nothingRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!nothingRadioButton.Checked) return;
+            var fig = GetCurrentFigure();
+
+            fig.Material.Reflection = 0;
+            fig.Material.Refraction = 0;
+            fig.Material.Ambient = 0.1f;
+            fig.Material.Diffuse = 0.7f;
+
+            if (fig == redCube) redCube.ColorFacesMonotonously(Color.Red);
+            if (fig == blueCube) blueCube.ColorFacesMonotonously(Color.Blue);
+        }
+
+        private void mirrorRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!mirrorRadioButton.Checked) return;
+            var mat = GetCurrentFigure().Material;
+
+            mat.Reflection = 0.95f;
+            mat.Refraction = 0;
+            mat.Ambient = 0.0f;
+            mat.Diffuse = 0.0f;
+        }
+
+        private void transparencyRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!transparencyRadioButton.Checked) return;
+            var mat = GetCurrentFigure().Material;
+
+            mat.Refraction = 0.9f;
+            mat.Reflection = 0.1f;
+            mat.Environment = 1.5f;
+            mat.Ambient = 0.0f;
+            mat.Diffuse = 0.0f;
+        }
+        private void UpdateMaterialUI(Material mat)
+        {
+            if (mat.Refraction > 0)
+            {
+                transparencyRadioButton.Checked = true;
+            }
+            else if (mat.Reflection > 0)
+            {
+                mirrorRadioButton.Checked = true;
+            }
+            else
+            {
+                nothingRadioButton.Checked = true;
+            }
+        }
+
+        private void SetWallMirror(int index, bool isMirror)
+        {
+            if (index < 0 || index >= figures.Count) return;
+
+            var mat = figures[index].Material;
+            if (isMirror)
+            {
+                mat.Reflection = 0.9f; // Делаем стену зеркальной
+                mat.Diffuse = 0.0f;    // Убираем матовость
+                mat.Ambient = 0.0f;
+            }
+            else
+            {
+                mat.Reflection = 0.0f; // Возвращаем обычную стену
+                mat.Diffuse = 0.7f;
+                mat.Ambient = 0.1f;
+            }
+        }
+
+        private void leftWallCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SetWallMirror(0, leftWallCheckBox.Checked);
+        }
+
+        private void rightWallCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SetWallMirror(1, rightWallCheckBox.Checked);
+        }
+
+        private void topWallCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SetWallMirror(2, topWallCheckBox.Checked);
+        }
+
+        private void bottomWallCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SetWallMirror(3, bottomWallCheckBox.Checked);
+        }
+
+        private void farWallCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            SetWallMirror(4, farWallCheckBox.Checked);
+        }
+
+        private void backWallCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            // Стена, которая находится за спиной камеры (если она есть в списке)
+            SetWallMirror(5, backWallCheckBox.Checked);
+        }
+
+        private void resetButton_Click(object sender, EventArgs e)
+        {
+            // Снимаем все галочки
+            leftWallCheckBox.Checked = false;
+            rightWallCheckBox.Checked = false;
+            topWallCheckBox.Checked = false;
+            bottomWallCheckBox.Checked = false;
+            farWallCheckBox.Checked = false;
+            backWallCheckBox.Checked = false;
+
+            // Сбрасываем настройки фигур (кубов и сфер)
+            nothingRadioButton.Checked = true;
         }
     }
 }

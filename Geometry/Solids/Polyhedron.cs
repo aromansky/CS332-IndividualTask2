@@ -218,9 +218,9 @@ namespace Geometry
             faces[0].Material = new Material();
             faces[0].Material.Color = new Vector3(Color.Red);
             // Грань 1
-            faces[1].SetColor(new Vector3(Color.Gray));
+            faces[1].SetColor(new Vector3(Color.DarkGray));
             faces[1].Material = new Material();
-            faces[1].Material.Color = new Vector3(Color.Gray);
+            faces[1].Material.Color = new Vector3(Color.DarkGray);
 
             // Грань 2
             faces[2].SetColor(new Vector3(Color.Aqua));

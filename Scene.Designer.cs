@@ -36,18 +36,20 @@ namespace IndividualTask2
             figuresGroupBox = new GroupBox();
             greenSphereRadioButton = new RadioButton();
             yellowSphereRadioButton = new RadioButton();
-            vlueCubeRadioButton = new RadioButton();
-            RedCuberadioButton = new RadioButton();
+            blueCubeRadioButton = new RadioButton();
+            RedCubeRadioButton = new RadioButton();
             figuresSettingsGroupBox = new GroupBox();
             transparencyRadioButton = new RadioButton();
             mirrorRadioButton = new RadioButton();
             nothingRadioButton = new RadioButton();
             WalsGroupBox = new GroupBox();
-            farWallRadioButton = new RadioButton();
-            bottomWallRadioButton = new RadioButton();
-            topWallRadioButton = new RadioButton();
-            leftWallRadioButton = new RadioButton();
-            rightWallRadioButton = new RadioButton();
+            backWallCheckBox = new CheckBox();
+            resetButton = new Button();
+            farWallCheckBox = new CheckBox();
+            bottomWallCheckBox = new CheckBox();
+            topWallCheckBox = new CheckBox();
+            leftWallCheckBox = new CheckBox();
+            rightWallCheckBox = new CheckBox();
             Render = new Button();
             progressBar = new ProgressBar();
             panel1 = new PictureBox();
@@ -62,9 +64,9 @@ namespace IndividualTask2
             figuresGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             figuresGroupBox.Controls.Add(greenSphereRadioButton);
             figuresGroupBox.Controls.Add(yellowSphereRadioButton);
-            figuresGroupBox.Controls.Add(vlueCubeRadioButton);
-            figuresGroupBox.Controls.Add(RedCuberadioButton);
-            figuresGroupBox.Location = new Point(552, 12);
+            figuresGroupBox.Controls.Add(blueCubeRadioButton);
+            figuresGroupBox.Controls.Add(RedCubeRadioButton);
+            figuresGroupBox.Location = new Point(614, 12);
             figuresGroupBox.Name = "figuresGroupBox";
             figuresGroupBox.Size = new Size(200, 122);
             figuresGroupBox.TabIndex = 47;
@@ -78,9 +80,9 @@ namespace IndividualTask2
             greenSphereRadioButton.Name = "greenSphereRadioButton";
             greenSphereRadioButton.Size = new Size(107, 19);
             greenSphereRadioButton.TabIndex = 3;
-            greenSphereRadioButton.TabStop = true;
             greenSphereRadioButton.Text = "Зелёная сфера";
             greenSphereRadioButton.UseVisualStyleBackColor = true;
+            greenSphereRadioButton.CheckedChanged += greenSphereRadioButton_CheckedChanged;
             // 
             // yellowSphereRadioButton
             // 
@@ -89,31 +91,33 @@ namespace IndividualTask2
             yellowSphereRadioButton.Name = "yellowSphereRadioButton";
             yellowSphereRadioButton.Size = new Size(103, 19);
             yellowSphereRadioButton.TabIndex = 2;
-            yellowSphereRadioButton.TabStop = true;
             yellowSphereRadioButton.Text = "Желтая сфера";
             yellowSphereRadioButton.UseVisualStyleBackColor = true;
+            yellowSphereRadioButton.CheckedChanged += yellowSphereRadioButton_CheckedChanged;
             // 
-            // vlueCubeRadioButton
+            // blueCubeRadioButton
             // 
-            vlueCubeRadioButton.AutoSize = true;
-            vlueCubeRadioButton.Location = new Point(6, 47);
-            vlueCubeRadioButton.Name = "vlueCubeRadioButton";
-            vlueCubeRadioButton.Size = new Size(83, 19);
-            vlueCubeRadioButton.TabIndex = 1;
-            vlueCubeRadioButton.TabStop = true;
-            vlueCubeRadioButton.Text = "Синий куб";
-            vlueCubeRadioButton.UseVisualStyleBackColor = true;
+            blueCubeRadioButton.AutoSize = true;
+            blueCubeRadioButton.Location = new Point(6, 47);
+            blueCubeRadioButton.Name = "blueCubeRadioButton";
+            blueCubeRadioButton.Size = new Size(83, 19);
+            blueCubeRadioButton.TabIndex = 1;
+            blueCubeRadioButton.Text = "Синий куб";
+            blueCubeRadioButton.UseVisualStyleBackColor = true;
+            blueCubeRadioButton.CheckedChanged += blueCubeRadioButton_CheckedChanged;
             // 
-            // RedCuberadioButton
+            // RedCubeRadioButton
             // 
-            RedCuberadioButton.AutoSize = true;
-            RedCuberadioButton.Location = new Point(6, 22);
-            RedCuberadioButton.Name = "RedCuberadioButton";
-            RedCuberadioButton.Size = new Size(96, 19);
-            RedCuberadioButton.TabIndex = 0;
-            RedCuberadioButton.TabStop = true;
-            RedCuberadioButton.Text = "Красный куб";
-            RedCuberadioButton.UseVisualStyleBackColor = true;
+            RedCubeRadioButton.AutoSize = true;
+            RedCubeRadioButton.Checked = true;
+            RedCubeRadioButton.Location = new Point(6, 22);
+            RedCubeRadioButton.Name = "RedCubeRadioButton";
+            RedCubeRadioButton.Size = new Size(96, 19);
+            RedCubeRadioButton.TabIndex = 0;
+            RedCubeRadioButton.TabStop = true;
+            RedCubeRadioButton.Text = "Красный куб";
+            RedCubeRadioButton.UseVisualStyleBackColor = true;
+            RedCubeRadioButton.CheckedChanged += RedCubeRadioButton_CheckedChanged;
             // 
             // figuresSettingsGroupBox
             // 
@@ -121,7 +125,7 @@ namespace IndividualTask2
             figuresSettingsGroupBox.Controls.Add(transparencyRadioButton);
             figuresSettingsGroupBox.Controls.Add(mirrorRadioButton);
             figuresSettingsGroupBox.Controls.Add(nothingRadioButton);
-            figuresSettingsGroupBox.Location = new Point(552, 140);
+            figuresSettingsGroupBox.Location = new Point(614, 140);
             figuresSettingsGroupBox.Name = "figuresSettingsGroupBox";
             figuresSettingsGroupBox.Size = new Size(200, 101);
             figuresSettingsGroupBox.TabIndex = 48;
@@ -137,6 +141,7 @@ namespace IndividualTask2
             transparencyRadioButton.TabIndex = 2;
             transparencyRadioButton.Text = "Прозрачность";
             transparencyRadioButton.UseVisualStyleBackColor = true;
+            transparencyRadioButton.CheckedChanged += transparencyRadioButton_CheckedChanged;
             // 
             // mirrorRadioButton
             // 
@@ -147,6 +152,7 @@ namespace IndividualTask2
             mirrorRadioButton.TabIndex = 1;
             mirrorRadioButton.Text = "Зеркальность";
             mirrorRadioButton.UseVisualStyleBackColor = true;
+            mirrorRadioButton.CheckedChanged += mirrorRadioButton_CheckedChanged;
             // 
             // nothingRadioButton
             // 
@@ -159,81 +165,105 @@ namespace IndividualTask2
             nothingRadioButton.TabStop = true;
             nothingRadioButton.Text = "Ничего";
             nothingRadioButton.UseVisualStyleBackColor = true;
+            nothingRadioButton.CheckedChanged += nothingRadioButton_CheckedChanged;
             // 
             // WalsGroupBox
             // 
             WalsGroupBox.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            WalsGroupBox.Controls.Add(farWallRadioButton);
-            WalsGroupBox.Controls.Add(bottomWallRadioButton);
-            WalsGroupBox.Controls.Add(topWallRadioButton);
-            WalsGroupBox.Controls.Add(leftWallRadioButton);
-            WalsGroupBox.Controls.Add(rightWallRadioButton);
-            WalsGroupBox.Location = new Point(552, 247);
+            WalsGroupBox.Controls.Add(backWallCheckBox);
+            WalsGroupBox.Controls.Add(farWallCheckBox);
+            WalsGroupBox.Controls.Add(bottomWallCheckBox);
+            WalsGroupBox.Controls.Add(topWallCheckBox);
+            WalsGroupBox.Controls.Add(leftWallCheckBox);
+            WalsGroupBox.Controls.Add(rightWallCheckBox);
+            WalsGroupBox.Location = new Point(614, 247);
             WalsGroupBox.Name = "WalsGroupBox";
-            WalsGroupBox.Size = new Size(200, 152);
+            WalsGroupBox.Size = new Size(200, 171);
             WalsGroupBox.TabIndex = 48;
             WalsGroupBox.TabStop = false;
             WalsGroupBox.Text = "Зеркальность стен";
             // 
-            // farWallRadioButton
+            // backWallCheckBox
             // 
-            farWallRadioButton.AutoSize = true;
-            farWallRadioButton.Location = new Point(6, 122);
-            farWallRadioButton.Name = "farWallRadioButton";
-            farWallRadioButton.Size = new Size(104, 19);
-            farWallRadioButton.TabIndex = 4;
-            farWallRadioButton.TabStop = true;
-            farWallRadioButton.Text = "Дальняя стена";
-            farWallRadioButton.UseVisualStyleBackColor = true;
+            backWallCheckBox.AutoSize = true;
+            backWallCheckBox.Location = new Point(6, 147);
+            backWallCheckBox.Name = "backWallCheckBox";
+            backWallCheckBox.Size = new Size(97, 19);
+            backWallCheckBox.TabIndex = 6;
+            backWallCheckBox.Text = "Задняя стена";
+            backWallCheckBox.UseVisualStyleBackColor = true;
+            backWallCheckBox.CheckedChanged += backWallCheckBox_CheckedChanged;
             // 
-            // bottomWallRadioButton
+            // resetButton
             // 
-            bottomWallRadioButton.AutoSize = true;
-            bottomWallRadioButton.Location = new Point(6, 97);
-            bottomWallRadioButton.Name = "bottomWallRadioButton";
-            bottomWallRadioButton.Size = new Size(102, 19);
-            bottomWallRadioButton.TabIndex = 3;
-            bottomWallRadioButton.TabStop = true;
-            bottomWallRadioButton.Text = "Нижняя стена";
-            bottomWallRadioButton.UseVisualStyleBackColor = true;
+            resetButton.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            resetButton.Location = new Point(620, 424);
+            resetButton.Name = "resetButton";
+            resetButton.Size = new Size(182, 23);
+            resetButton.TabIndex = 5;
+            resetButton.Text = "Сброс";
+            resetButton.UseVisualStyleBackColor = true;
+            resetButton.Click += resetButton_Click;
             // 
-            // topWallRadioButton
+            // farWallCheckBox
             // 
-            topWallRadioButton.AutoSize = true;
-            topWallRadioButton.Location = new Point(6, 72);
-            topWallRadioButton.Name = "topWallRadioButton";
-            topWallRadioButton.Size = new Size(102, 19);
-            topWallRadioButton.TabIndex = 2;
-            topWallRadioButton.TabStop = true;
-            topWallRadioButton.Text = "Верхняя стена";
-            topWallRadioButton.UseVisualStyleBackColor = true;
+            farWallCheckBox.AutoSize = true;
+            farWallCheckBox.Location = new Point(6, 122);
+            farWallCheckBox.Name = "farWallCheckBox";
+            farWallCheckBox.Size = new Size(105, 19);
+            farWallCheckBox.TabIndex = 4;
+            farWallCheckBox.Text = "Дальняя стена";
+            farWallCheckBox.UseVisualStyleBackColor = true;
+            farWallCheckBox.CheckedChanged += farWallCheckBox_CheckedChanged;
             // 
-            // leftWallRadioButton
+            // bottomWallCheckBox
             // 
-            leftWallRadioButton.AutoSize = true;
-            leftWallRadioButton.Location = new Point(6, 47);
-            leftWallRadioButton.Name = "leftWallRadioButton";
-            leftWallRadioButton.Size = new Size(90, 19);
-            leftWallRadioButton.TabIndex = 1;
-            leftWallRadioButton.TabStop = true;
-            leftWallRadioButton.Text = "Левая стена";
-            leftWallRadioButton.UseVisualStyleBackColor = true;
+            bottomWallCheckBox.AutoSize = true;
+            bottomWallCheckBox.Location = new Point(6, 97);
+            bottomWallCheckBox.Name = "bottomWallCheckBox";
+            bottomWallCheckBox.Size = new Size(103, 19);
+            bottomWallCheckBox.TabIndex = 3;
+            bottomWallCheckBox.Text = "Нижняя стена";
+            bottomWallCheckBox.UseVisualStyleBackColor = true;
+            bottomWallCheckBox.CheckedChanged += bottomWallCheckBox_CheckedChanged;
             // 
-            // rightWallRadioButton
+            // topWallCheckBox
             // 
-            rightWallRadioButton.AutoSize = true;
-            rightWallRadioButton.Location = new Point(6, 22);
-            rightWallRadioButton.Name = "rightWallRadioButton";
-            rightWallRadioButton.Size = new Size(98, 19);
-            rightWallRadioButton.TabIndex = 0;
-            rightWallRadioButton.TabStop = true;
-            rightWallRadioButton.Text = "Правая стена";
-            rightWallRadioButton.UseVisualStyleBackColor = true;
+            topWallCheckBox.AutoSize = true;
+            topWallCheckBox.Location = new Point(6, 72);
+            topWallCheckBox.Name = "topWallCheckBox";
+            topWallCheckBox.Size = new Size(103, 19);
+            topWallCheckBox.TabIndex = 2;
+            topWallCheckBox.Text = "Верхняя стена";
+            topWallCheckBox.UseVisualStyleBackColor = true;
+            topWallCheckBox.CheckedChanged += topWallCheckBox_CheckedChanged;
+            // 
+            // leftWallCheckBox
+            // 
+            leftWallCheckBox.AutoSize = true;
+            leftWallCheckBox.Location = new Point(6, 47);
+            leftWallCheckBox.Name = "leftWallCheckBox";
+            leftWallCheckBox.Size = new Size(91, 19);
+            leftWallCheckBox.TabIndex = 1;
+            leftWallCheckBox.Text = "Левая стена";
+            leftWallCheckBox.UseVisualStyleBackColor = true;
+            leftWallCheckBox.CheckedChanged += leftWallCheckBox_CheckedChanged;
+            // 
+            // rightWallCheckBox
+            // 
+            rightWallCheckBox.AutoSize = true;
+            rightWallCheckBox.Location = new Point(6, 22);
+            rightWallCheckBox.Name = "rightWallCheckBox";
+            rightWallCheckBox.Size = new Size(99, 19);
+            rightWallCheckBox.TabIndex = 0;
+            rightWallCheckBox.Text = "Правая стена";
+            rightWallCheckBox.UseVisualStyleBackColor = true;
+            rightWallCheckBox.CheckedChanged += rightWallCheckBox_CheckedChanged;
             // 
             // Render
             // 
             Render.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            Render.Location = new Point(558, 423);
+            Render.Location = new Point(614, 459);
             Render.Name = "Render";
             Render.Size = new Size(194, 23);
             Render.TabIndex = 0;
@@ -244,7 +274,7 @@ namespace IndividualTask2
             // progressBar
             // 
             progressBar.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            progressBar.Location = new Point(558, 452);
+            progressBar.Location = new Point(614, 488);
             progressBar.Name = "progressBar";
             progressBar.Size = new Size(194, 23);
             progressBar.TabIndex = 50;
@@ -254,7 +284,7 @@ namespace IndividualTask2
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel1.Location = new Point(12, 12);
             panel1.Name = "panel1";
-            panel1.Size = new Size(534, 463);
+            panel1.Size = new Size(596, 499);
             panel1.TabIndex = 51;
             panel1.TabStop = false;
             // 
@@ -262,8 +292,9 @@ namespace IndividualTask2
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(784, 491);
+            ClientSize = new Size(846, 525);
             Controls.Add(panel1);
+            Controls.Add(resetButton);
             Controls.Add(progressBar);
             Controls.Add(Render);
             Controls.Add(WalsGroupBox);
@@ -286,8 +317,8 @@ namespace IndividualTask2
 
         #endregion
         private GroupBox figuresGroupBox;
-        private RadioButton vlueCubeRadioButton;
-        private RadioButton RedCuberadioButton;
+        private RadioButton blueCubeRadioButton;
+        private RadioButton RedCubeRadioButton;
         private RadioButton greenSphereRadioButton;
         private RadioButton yellowSphereRadioButton;
         private GroupBox figuresSettingsGroupBox;
@@ -295,14 +326,16 @@ namespace IndividualTask2
         private RadioButton mirrorRadioButton;
         private RadioButton nothingRadioButton;
         private GroupBox WalsGroupBox;
-        private RadioButton farWallRadioButton;
-        private RadioButton bottomWallRadioButton;
-        private RadioButton topWallRadioButton;
-        private RadioButton leftWallRadioButton;
-        private RadioButton rightWallRadioButton;
+        private CheckBox farWallCheckBox;
+        private CheckBox bottomWallCheckBox;
+        private CheckBox topWallCheckBox;
+        private CheckBox leftWallCheckBox;
+        private CheckBox rightWallCheckBox;
         private Button Render;
         private ProgressBar progressBar;
         private PictureBox panel1;
+        private Button resetButton;
+        private CheckBox backWallCheckBox;
     }
 }
 
