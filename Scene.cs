@@ -256,28 +256,28 @@ namespace IndividualTask2
 
         private void rightWallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SetWallMirror(1, rightWallCheckBox.Checked);
+            SetWallMirror(2, rightWallCheckBox.Checked);
         }
 
-        private void topWallCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void topWallCheckBox_CheckedChanged(object sender, EventArgs e) 
         {
-            SetWallMirror(2, topWallCheckBox.Checked);
+            SetWallMirror(5, topWallCheckBox.Checked);
         }
 
         private void bottomWallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SetWallMirror(3, bottomWallCheckBox.Checked);
+            SetWallMirror(4, bottomWallCheckBox.Checked);
         }
 
         private void farWallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            SetWallMirror(4, farWallCheckBox.Checked);
+            SetWallMirror(1, farWallCheckBox.Checked);
         }
 
         private void backWallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             // Стена, которая находится за спиной камеры (если она есть в списке)
-            SetWallMirror(5, backWallCheckBox.Checked);
+            SetWallMirror(3, backWallCheckBox.Checked);
         }
 
         private void resetButton_Click(object sender, EventArgs e)
