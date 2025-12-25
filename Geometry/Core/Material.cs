@@ -33,6 +33,8 @@ namespace Geometry
         /// </summary>
         public float Diffuse { get; set; } = 0.7f;
 
+        public float Transparency { get; set; } = 0;
+
         /// <summary>
         /// цвет материала
         /// </summary>

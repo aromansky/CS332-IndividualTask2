@@ -40,7 +40,7 @@ namespace Geometry
         /// <param name="ray"></param>
         /// <param name="lightPoint"></param>
         /// <returns></returns>
-        private static bool PointIsVisible(Ray ray, Point3D lightPoint, List<IFigure> figures, float eps)
+        private static float PointVisible(Ray ray, Point3D lightPoint, List<IFigure> figures, float eps)
         {
             float lightDistance = (lightPoint - ray.Start).Length(); // растояние от точки до источника света
             foreach (IFigure figure in figures)
@@ -49,9 +49,11 @@ namespace Geometry
                 Vector3 normal;
                 if (figure.FigureIntersection(ray, out distance, out normal, eps))
                     if (distance < lightDistance && distance > eps) // если источник света в фигуре
-                        return false;
+                    {
+                        return figure.Material.Transparency;
+                    }
             }
-            return true;
+            return 1;
         }
 
         /// <summary>
@@ -146,8 +148,7 @@ namespace Geometry
                         shadowRay.Direction.Normalize();
 
                         // если точка освещена источниками света
-                        if (PointIsVisible(shadowRay, light, figures, eps))
-                            currentRayNode.color += ShadingUtils.CalculateLambertColor(light, currentRayNode.HitPoint, currentRayNode.Normal, currentRayNode.HitMaterial.Color);
+                        currentRayNode.color += PointVisible(shadowRay, light, figures, eps) * ShadingUtils.CalculateLambertColor(light, currentRayNode.HitPoint, currentRayNode.Normal, currentRayNode.HitMaterial.Color);
                     }
                 }
                 currentRayNode.isLocalLightingCalculated = true;

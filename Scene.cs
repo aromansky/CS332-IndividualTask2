@@ -143,7 +143,7 @@ namespace IndividualTask2
             int h = panel1.Height;
 
             MyImage result = await Task.Run(() =>
-                RayTracing.ComputeRayTracing(cam, figures, lightSources, w, h, 15, 0.001f, progressIndicator)
+                RayTracing.ComputeRayTracing(cam, figures, lightSources, w, h, 8, 0.001f, progressIndicator)
             );
 
             panel1.Image = result.Img;
@@ -209,8 +209,9 @@ namespace IndividualTask2
             var mat = GetCurrentFigure().Material;
 
             mat.Refraction = 0.9f;
+            mat.Transparency = 1.0f;
             mat.Reflection = 0.1f;
-            mat.Environment = 1.5f;
+            mat.Environment = 1.0f;
             mat.Ambient = 0.0f;
             mat.Diffuse = 0.0f;
         }
